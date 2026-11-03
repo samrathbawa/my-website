@@ -68,7 +68,7 @@
         <li><a class="link-btn" href="mailto:samrathbawa@outlook.com">Email</a></li>
       </ul>
       <ul class="stack" aria-label="Technical skills">
-        <li>C++</li><li>C#</li><li>Java</li><li>Python</li><li>JavaScript</li><li>HTML</li><li>CSS</li><li>Git</li>
+        <li>C++</li><li>Java</li><li>Python</li><li>R</li><li>JavaScript</li><li>x86 Assembly</li><li>Git</li><li>CAN bus</li><li>Altium</li><li>SolidWorks</li>
       </ul>
     </section>
 
@@ -143,43 +143,72 @@
         <section class="sheet-section" aria-labelledby="rs-skills">
           <h3 id="rs-skills">Skills</h3>
           <div class="skill-lines">
-            <p><strong>Electrical and Programming:</strong> Soldering, Lighting, C++, C#, Java, Python, CSS, JavaScript, HTML, Git</p>
-            <p><strong>3D Printing:</strong> Maintaining machines, Slicing, Design, Safety operating</p>
-            <p><strong>Laser Cut and Engraving:</strong> CAD, CO2 Laser, Assembly, Safety Protocols</p>
-            <p><strong>Woodworking:</strong> Bandsaw, Tablesaw, Sanding, Staining</p>
-            <p><strong>Professional Communication:</strong> Collaborating with other groups, Handling disputes within group civilly</p>
-            <p><strong>Autonomy:</strong> Completing tasks with minimal guidance and supervision</p>
-            <p><strong>Project Management:</strong> Time management, Managing group roles</p>
+            <p><strong>Programming:</strong> C++, Java, Python, R, JavaScript, HTML, CSS, x86 Assembly, Git, JUnit, REST APIs, pandas</p>
+            <p><strong>Embedded and Electrical:</strong> Teensy, ESP32, CAN bus, PlatformIO, Altium Designer, KiCad, Soldering, Lighting</p>
+            <p><strong>CAD and Analysis:</strong> SolidWorks, Fusion 360, Ansys Mechanical (FEA)</p>
+            <p><strong>Fabrication:</strong> 3D printing (machine upkeep, slicing), CO2 laser cutting and engraving, woodworking</p>
+            <p><strong>Game Engines:</strong> Godot, Defold, Panda3D</p>
           </div>
         </section>
 
         <section class="sheet-section" aria-labelledby="rs-exp">
           <h3 id="rs-exp">Experience</h3>
           <div class="sheet-entry">
-            <div class="entry-line"><strong>Jr. Auxiliary Volunteer</strong><span class="entry-when mono">May 2024 – May 2025</span></div>
-            <p class="entry-org">Hoag Hospital</p>
+            <div class="entry-line"><strong>AI Training Fellow</strong><span class="entry-when mono">July 2026 – Present</span></div>
+            <p class="entry-org">Handshake AI</p>
             <ul>
-              <li>Providing support services to patients, visitors, and staff</li>
-              <li>Customer services, general information, and wayfinding around the hospital</li>
-              <li>Wheelchair services</li>
+              <li>Writing hard questions about charts, tables, and images built to find where AI models break, tagged by the kind of reasoning they test</li>
+              <li>Writing money and tax questions that can only be answered by reading through five or more documents</li>
+              <li>Building grading rubrics that score AI answers point by point and writing up what each answer got wrong, which becomes training data</li>
+              <li>Rating and captioning AI generated video, images, and audio against a detailed style guide</li>
             </ul>
           </div>
           <div class="sheet-entry">
-            <div class="entry-line"><strong>Student</strong><span class="entry-when mono">August 2023 – June 2025</span></div>
-            <p class="entry-org">Woodbridge High School Makerspace</p>
+            <div class="entry-line"><strong>Software Captain</strong><span class="entry-when mono">2026 – Present</span></div>
+            <p class="entry-org">Bronco Electric Motorsports (Formula SAE Electric)</p>
             <ul>
-              <li>3D printing on Prusas</li>
-              <li>Electronics including microcontrollers, soldering, and lighting</li>
-              <li>Woodworking and CAD</li>
+              <li>Lead the software side of the electric race car and wrote the team's code, Git, and docs standards</li>
+              <li>Responsible for the car's CAN bus network, covering the dashboard, wheel display, and sensor board</li>
+              <li>Managed other members' code contributions and reviewed their pull requests to ensure they met the team's standards</li>
+              <li>Refactored the full firmware codebase of last year's car into modules to build the new car on</li>
             </ul>
           </div>
           <div class="sheet-entry">
             <div class="entry-line"><strong>Vice President</strong><span class="entry-when mono">August 2023 – June 2025</span></div>
             <p class="entry-org">Woodbridge High School Web Development Club</p>
             <ul>
-              <li>Helping fellow club members learn web development</li>
-              <li>Teaching HTML, JavaScript, and CSS</li>
-              <li>Created websites for multiple clients such as other clubs and teachers</li>
+              <li>Taught members HTML, CSS, and JavaScript and built websites for clients such as other clubs and teachers</li>
+            </ul>
+          </div>
+          <div class="sheet-entry">
+            <div class="entry-line"><strong>Jr. Auxiliary Volunteer</strong><span class="entry-when mono">May 2024 – May 2025</span></div>
+            <p class="entry-org">Hoag Hospital</p>
+            <ul>
+              <li>Supported patients, visitors, and staff with wayfinding and wheelchair services</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="sheet-section" aria-labelledby="rs-proj">
+          <h3 id="rs-proj">Projects</h3>
+          <div class="sheet-entry">
+            <div class="entry-line"><strong>Race Car Dashboard and Steering Wheel Display</strong><span class="entry-when mono">Teensy, CAN bus, Altium</span></div>
+            <ul>
+              <li>Designed a sunlight readable CAN wheel display and a Teensy 4.1 dashboard schematic for the car</li>
+              <li>Moved the team's ESP32 sensor board from KiCad to Altium, verifying all 110 parts and 75 nets</li>
+            </ul>
+          </div>
+          <div class="sheet-entry">
+            <div class="entry-line"><strong>Accelerator Pedal Stress Analysis</strong><span class="entry-when mono">SolidWorks, Ansys</span></div>
+            <ul>
+              <li>Ran FEA on the pedal shock mounts, found the stock part too close to failing, and designed an aluminum pedal stop (safety factor 2.4)</li>
+              <li>Built a posable 95th percentile driver model in SolidWorks to check the car against the FSAE driver fit rules</li>
+            </ul>
+          </div>
+          <div class="sheet-entry">
+            <div class="entry-line"><strong>Game Telemetry to Hardware Bridge</strong><span class="entry-when mono">Windows, Device Drivers</span></div>
+            <ul>
+              <li>Turned live car data from a racing game into steering forces on a real steering wheel, using virtual device drivers</li>
             </ul>
           </div>
         </section>
@@ -188,7 +217,10 @@
           <h3 id="rs-edu">Education</h3>
           <div class="sheet-entry">
             <div class="entry-line"><strong>California State Polytechnic University, Pomona</strong><span class="entry-when mono">2025 – 2029</span></div>
-            <p class="entry-org">Bachelor of Science in Computer Science</p>
+            <p class="entry-org">Bachelor of Science in Computer Science, GPA 3.61, Dean's List</p>
+            <ul>
+              <li>Coursework: Data Structures, Computer Organization and Assembly, Systems Programming, C++, Discrete Structures, UI Design, Probability and Statistics</li>
+            </ul>
           </div>
           <div class="sheet-entry">
             <div class="entry-line"><strong>Woodbridge High School</strong><span class="entry-when mono">2021 – 2025</span></div>
