@@ -1,0 +1,289 @@
+/* Uploads: dashboard + public file pages. Builds on the tokens in /css/style.css. */
+
+main { padding-bottom: var(--space-12); }
+
+.muted { color: var(--muted); }
+.dash-panel h1,
+.file-page h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+button.link-btn {
+  font-family: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+.link-btn.small { min-height: 34px; padding: 0 var(--space-3); font-size: 0.875rem; }
+.link-btn.danger:hover { border-color: #e5484d; color: #e5484d; }
+
+.text-btn {
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: var(--space-2) var(--space-1);
+  cursor: pointer;
+}
+.text-btn:hover { color: var(--ink); }
+
+code { font-family: var(--font-mono); font-size: 0.85em; color: var(--ink); }
+
+/* ---------- public file page ---------- */
+
+.file-page main { max-width: 72rem; }
+
+.upload {
+  margin: var(--space-4) 0 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.upload:empty { display: none; }
+.upload img,
+.upload video {
+  display: block;
+  max-width: 100%;
+  max-height: 78vh;
+}
+.upload audio { width: 100%; padding: var(--space-6); }
+.upload pre {
+  justify-self: stretch;
+  margin: 0;
+  padding: var(--space-6);
+  max-height: 78vh;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.upload-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.upload-info h1 { font-size: 1.375rem; }
+.upload-info p { margin: var(--space-1) 0 0; }
+.upload-actions { display: flex; gap: var(--space-3); }
+
+.file-page form { margin-top: var(--space-6); }
+
+/* ---------- dashboard shell ---------- */
+
+.dash-panel { padding-top: clamp(1rem, 3vw, 2rem); }
+.dash-panel.narrow { max-width: 34rem; }
+.panel-head { margin-bottom: var(--space-6); }
+.panel-head p { margin: var(--space-2) 0 0; }
+
+.dash-tabs a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; }
+@media (max-width: 640px) {
+  .site-nav.dash-tabs { display: flex; } /* the dashboard needs its tabs on phones */
+}
+
+/* ---------- forms ---------- */
+
+.stack-form { display: grid; gap: var(--space-4); }
+.stack-form label { display: grid; gap: var(--space-1); }
+.stack-form label > span { font-size: 0.875rem; font-weight: 550; color: var(--ink); }
+.stack-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+@media (max-width: 640px) { .stack-form .row { grid-template-columns: 1fr; } }
+.stack-form > button { justify-self: start; }
+
+input:not([type="checkbox"], [type="radio"], [type="color"]),
+textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+textarea { resize: vertical; line-height: 1.5; }
+input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
+
+.stack-form label.check { display: flex; align-items: center; gap: var(--space-2); font-size: 0.9375rem; }
+.stack-form label.check > span { font-weight: 400; color: var(--text); }
+input[type="checkbox"], input[type="radio"] { width: 1.05rem; height: 1.05rem; accent-color: var(--ink); margin: 0; }
+
+.stack-form label.color { display: flex; align-items: center; gap: var(--space-3); }
+input[type="color"] {
+  width: 44px;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.stack-form label.inline { display: flex; align-items: center; gap: var(--space-3); }
+.stack-form label.inline input { width: 6rem; }
+
+fieldset {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-2) 0 0;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+legend { padding: 0 var(--space-1); font-size: 0.875rem; font-weight: 550; color: var(--ink); }
+
+.hint { margin: 0; font-size: 0.875rem; }
+.hint code { margin-right: var(--space-1); }
+.form-error { margin: 0; min-height: 1.5em; color: #e5484d; font-size: 0.9375rem; }
+
+/* ---------- files ---------- */
+
+.dropzone {
+  display: grid;
+  gap: var(--space-1);
+  place-items: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 140ms ease-out, background-color 140ms ease-out;
+}
+.dropzone strong { color: var(--ink); font-weight: 600; }
+.dropzone span { font-size: 0.875rem; }
+.dropzone:hover,
+.dropzone.over { border-color: var(--ink); background: var(--surface); }
+
+.queue { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: grid; gap: var(--space-1); }
+.queue li { font-size: 0.875rem; color: var(--muted); }
+.queue li.error { color: #e5484d; }
+
+.file-grid {
+  list-style: none;
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  gap: var(--space-4);
+}
+
+.file-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.file-card.fresh { border-color: var(--ink); }
+
+.thumb {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.thumb img, .thumb video { width: 100%; height: 100%; object-fit: cover; }
+.thumb .ext { font-family: var(--font-mono); font-size: 0.875rem; color: var(--muted); text-transform: uppercase; }
+
+.file-body { padding: var(--space-3); display: grid; gap: var(--space-1); }
+.file-name {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.file-meta { margin: 0; }
+.file-meta.kept { color: var(--ink); }
+.link-btn[aria-pressed="true"] { border-color: var(--ink); }
+.file-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+
+/* ---------- embed editor ---------- */
+
+.embed-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+  gap: var(--space-8);
+  align-items: start;
+}
+@media (max-width: 860px) { .embed-layout { grid-template-columns: 1fr; } }
+
+.preview-wrap { position: sticky; top: var(--space-4); }
+.preview-wrap > p { margin: 0 0 var(--space-2); }
+
+/* A stand-in for Discord's message view, so its own colors on purpose. */
+.discord {
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  background: #313338;
+  color: #dbdee1;
+  font-size: 0.9375rem;
+  line-height: 1.375;
+}
+.pv-link { color: #00a8fc; overflow-wrap: anywhere; margin-bottom: var(--space-2); }
+.pv-embed {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 26rem;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border-left: 4px solid var(--embed-color, #303030);
+  border-radius: 4px;
+  background: #2b2d31;
+}
+.pv-embed[hidden], .pv-plain[hidden] { display: none; }
+.pv-site { font-size: 0.75rem; color: #b5bac1; }
+.pv-author { font-size: 0.875rem; font-weight: 600; color: #f2f3f5; }
+.pv-title { font-weight: 600; color: #00a8fc; }
+.pv-desc { font-size: 0.875rem; white-space: pre-wrap; }
+.pv-site:empty, .pv-author:empty, .pv-title:empty, .pv-desc:empty { display: none; }
+.pv-image, .pv-plain {
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.06) 25%, transparent 25%) 0 0 / 24px 24px,
+    #1e1f22;
+}
+.pv-plain { max-width: 22rem; }
+
+/* ---------- sharex ---------- */
+
+.steps { padding-left: 1.25rem; margin: 0 0 var(--space-6); display: grid; gap: var(--space-2); }
+.steps li { padding-left: var(--space-1); }
+#sxcu + .hint { margin-top: var(--space-4); }
+
+/* ---------- toast ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-6);
+  translate: -50% 1rem;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  background: var(--primary-btn-bg);
+  color: var(--primary-btn-ink);
+  font-size: 0.9375rem;
+  font-weight: 550;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease-out, translate 160ms ease-out;
+}
+.toast.show { opacity: 1; translate: -50% 0; }
+@media (prefers-reduced-motion: reduce) { .toast { transition: none; } }

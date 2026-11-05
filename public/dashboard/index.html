@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uploads · sambawa.dev</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#303030">
+
+  <script>
+    (function () {
+      var stored = null;
+      try { stored = localStorage.getItem('theme'); } catch (e) {}
+      document.documentElement.dataset.theme = stored || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Fragment+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/dashboard/uploads.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23303030'/%3E%3Ctext x='50' y='67' font-size='46' text-anchor='middle' font-family='monospace' fill='%23f2f2f2'%3ESB%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="wordmark" href="/">sambawa<span class="tld">.dev</span></a>
+    <nav class="site-nav dash-tabs" aria-label="Dashboard" hidden>
+      <a href="#files" data-tab="files">Files</a>
+      <a href="#embed" data-tab="embed">Embed</a>
+      <a href="#sharex" data-tab="sharex">ShareX</a>
+    </nav>
+    <button id="lock" class="text-btn" type="button" hidden>Lock</button>
+  </header>
+
+  <main>
+
+    <!-- Locked -->
+    <section id="unlock" class="dash-panel narrow">
+      <h1>Uploads</h1>
+      <p class="muted">Enter the upload key to manage files.</p>
+      <form id="unlock-form" class="stack-form">
+        <label>
+          <span>Upload key</span>
+          <input id="key" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="link-btn primary" type="submit">Unlock</button>
+        <p id="unlock-error" class="form-error" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- Files -->
+    <section id="files" class="dash-panel" hidden>
+      <div class="panel-head">
+        <h1>Files</h1>
+        <p id="stats" class="muted mono"></p>
+        <p id="retention" class="muted"></p>
+      </div>
+
+      <label id="dropzone" class="dropzone">
+        <input id="picker" type="file" multiple hidden>
+        <strong>Drop files, paste, or click to upload</strong>
+        <span class="muted">Link is copied when the upload finishes. 95 MB max.</span>
+      </label>
+      <ul id="queue" class="queue"></ul>
+
+      <ul id="grid" class="file-grid"></ul>
+      <p id="empty" class="muted" hidden>Nothing uploaded yet.</p>
+    </section>
+
+    <!-- Embed -->
+    <section id="embed" class="dash-panel" hidden>
+      <div class="panel-head">
+        <h1>Embed</h1>
+        <p class="muted">How links look when pasted in Discord.</p>
+      </div>
+
+      <div class="embed-layout">
+        <form id="settings-form" class="stack-form">
+          <label class="check">
+            <input name="enabled" type="checkbox">
+            <span>Rich embed <small class="muted">(off: links serve the raw file)</small></span>
+          </label>
+
+          <div class="row">
+            <label><span>Site name</span><input name="siteName" maxlength="256"></label>
+            <label><span>Site URL</span><input name="siteUrl" type="url" placeholder="https://"></label>
+          </div>
+          <div class="row">
+            <label><span>Author</span><input name="authorName" maxlength="256"></label>
+            <label><span>Author URL</span><input name="authorUrl" type="url" placeholder="https://"></label>
+          </div>
+          <label><span>Title</span><input name="title" maxlength="256"></label>
+          <label><span>Description</span><textarea name="description" rows="3" maxlength="1000"></textarea></label>
+          <label class="color">
+            <span>Color</span>
+            <input name="color" type="color">
+            <code id="color-hex" class="mono"></code>
+          </label>
+          <p class="hint muted">
+            Placeholders: <code>{filename}</code> <code>{size}</code> <code>{date}</code> <code>{type}</code> <code>{id}</code>
+          </p>
+
+          <fieldset>
+            <legend>Link style</legend>
+            <label class="check"><input type="radio" name="urlStyle" value="random"> <span>Random <code class="mono">sambawa.dev/k3Fq9xPa</code></span></label>
+            <label class="check"><input type="radio" name="urlStyle" value="emoji"> <span>Emoji <code class="mono">sambawa.dev/🐸🚀🍕🔮</code></span></label>
+            <label class="check"><input type="radio" name="urlStyle" value="invisible"> <span>Invisible <code class="mono">sambawa.dev/</code> <small class="muted">(zero-width characters)</small></span></label>
+            <label class="inline"><span>Length</span><input name="idLength" type="number" min="3" max="48"></label>
+          </fieldset>
+
+          <button class="link-btn primary" type="submit">Save</button>
+          <p id="settings-status" class="muted" role="status"></p>
+        </form>
+
+        <div class="preview-wrap">
+          <p class="mono muted">Preview</p>
+          <div class="discord">
+            <div id="pv-link" class="pv-link">https://sambawa.dev/k3Fq9xPa</div>
+            <div id="pv-embed" class="pv-embed">
+              <div id="pv-site" class="pv-site"></div>
+              <div id="pv-author" class="pv-author"></div>
+              <div id="pv-title" class="pv-title"></div>
+              <div id="pv-desc" class="pv-desc"></div>
+              <div class="pv-image" aria-hidden="true"></div>
+            </div>
+            <div id="pv-plain" class="pv-plain" aria-hidden="true" hidden></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ShareX -->
+    <section id="sharex" class="dash-panel narrow" hidden>
+      <div class="panel-head">
+        <h1>ShareX</h1>
+        <p class="muted">Capture, upload, and copy the link in one keystroke.</p>
+      </div>
+      <ol class="steps">
+        <li>Download the config below. It contains your upload key, so don’t share it.</li>
+        <li>Double-click <code>sambawa.dev.sxcu</code>. ShareX asks to make it the default image, text, and file uploader: say yes.</li>
+        <li>In ShareX, <strong>After upload tasks</strong> → keep <strong>Copy URL to clipboard</strong> checked.</li>
+        <li>Take a screenshot. The link is on your clipboard; paste it in Discord.</li>
+      </ol>
+      <button id="sxcu" class="link-btn primary" type="button">Download sambawa.dev.sxcu</button>
+      <p class="hint muted">Deletion links from ShareX’s history open a confirm page here.</p>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/dashboard/dashboard.js"></script>
+</body>
+</html>
