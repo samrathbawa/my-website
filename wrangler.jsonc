@@ -17,6 +17,7 @@
 			"bucket_name": "sambawa-uploads"
 		}
 	],
+	"routes": [{ "pattern": "sambawa.dev", "custom_domain": true }],
 	// Daily: delete uploads older than 180 days unless marked "keep" (see purgeExpired)
 	"triggers": {
 		"crons": [
