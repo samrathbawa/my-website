@@ -29,6 +29,15 @@
   });
   applyToggleLabel();
 
+  // Hidden door: 10 theme toggles within 5 s opens the uploads dashboard.
+  var toggleClicks = [];
+  toggle.addEventListener('click', function () {
+    var now = Date.now();
+    toggleClicks = toggleClicks.filter(function (t) { return now - t < 5000; });
+    toggleClicks.push(now);
+    if (toggleClicks.length >= 10) location.href = '/dashboard/';
+  });
+
   document.getElementById('year').textContent = new Date().getFullYear();
 
   /* ---------- small cache helper ---------- */
