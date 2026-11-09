@@ -1,0 +1,220 @@
+/* sambawa.dev in the system24 style (github.com/refact0r/system24): shared tokens and parts
+   for the uploads dashboard and the file pages. The homepage carries its own copy inline.
+   --text-5 is for decoration only; every readable gray clears WCAG AA (4.5:1). */
+
+:root {
+  --text-0: var(--bg-4);
+  --text-1: oklch(95% 0 0);
+  --text-2: oklch(85% 0 0);
+  --text-3: oklch(75% 0 0);
+  --text-4: oklch(64% 0 0);
+  --text-5: oklch(40% 0 0);
+
+  --bg-1: oklch(31% 0 0);
+  --bg-2: oklch(27% 0 0);
+  --bg-3: oklch(23% 0 0);
+  --bg-4: oklch(19% 0 0);
+  --hover: oklch(54% 0 0 / 0.1);
+  --active: oklch(54% 0 0 / 0.2);
+
+  --accent-1: oklch(75% 0.11 215);
+  --accent-2: oklch(70% 0.11 215);
+  --accent-3: oklch(65% 0.11 215);
+  --accent-4: oklch(60% 0.11 215);
+  --on-accent: var(--bg-4);
+  --online: oklch(70% 0.12 170);
+  --danger: oklch(70% 0.13 0);
+
+  --border: var(--active);
+  --border-hover: var(--accent-2);
+  --button-border: hsl(220, 0%, 100%, 0.12);
+
+  --gap: 12px;
+  --row-gap: 30px;
+  --border-thickness: 2px;
+  --border-hover-transition: 0.2s ease;
+  --list-item-transition: 0.15s ease;
+  --tap: 2.75rem;
+}
+
+:root[data-theme="light"] {
+  --text-1: oklch(20% 0 0);
+  --text-2: oklch(25% 0 0);
+  --text-3: oklch(30% 0 0);
+  --text-4: oklch(48% 0 0);
+  --text-5: oklch(70% 0 0);
+  --bg-1: oklch(82% 0 0);
+  --bg-2: oklch(86% 0 0);
+  --bg-3: oklch(90% 0 0);
+  --bg-4: oklch(94% 0 0);
+  --hover: oklch(50% 0 0 / 0.1);
+  --active: oklch(50% 0 0 / 0.2);
+  --accent-1: oklch(48% 0.11 215);
+  --accent-2: oklch(55% 0.11 215);
+  --accent-3: oklch(70% 0.11 215);
+  --accent-4: oklch(65% 0.11 215);
+  --on-accent: oklch(20% 0 0);
+  --online: oklch(60% 0.12 170);
+  --danger: oklch(50% 0.15 25);
+  --button-border: hsl(220, 0%, 0%, 0.14);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --text-1: oklch(20% 0 0);
+    --text-2: oklch(25% 0 0);
+    --text-3: oklch(30% 0 0);
+    --text-4: oklch(48% 0 0);
+    --text-5: oklch(70% 0 0);
+    --bg-1: oklch(82% 0 0);
+    --bg-2: oklch(86% 0 0);
+    --bg-3: oklch(90% 0 0);
+    --bg-4: oklch(94% 0 0);
+    --hover: oklch(50% 0 0 / 0.1);
+    --active: oklch(50% 0 0 / 0.2);
+    --accent-1: oklch(48% 0.11 215);
+    --accent-2: oklch(55% 0.11 215);
+    --accent-3: oklch(70% 0.11 215);
+    --accent-4: oklch(65% 0.11 215);
+    --on-accent: oklch(20% 0 0);
+    --online: oklch(60% 0.12 170);
+    --danger: oklch(50% 0.15 25);
+    --button-border: hsl(220, 0%, 0%, 0.14);
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}
+body {
+  margin: 0;
+  background: var(--bg-4);
+  color: var(--text-3);
+  font-family: 'DM Mono', ui-monospace, Consolas, monospace;
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: -0.05ch;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent-1); text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong, b { font-weight: 500; color: var(--text-2); }
+::selection { background: var(--accent-3); color: var(--on-accent); }
+:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+code, .mono { font-family: inherit; }
+code { color: var(--text-2); font-weight: 400; }
+.muted { color: var(--text-4); }
+
+/* ---------- panels + labels ---------- */
+
+.panel {
+  position: relative;
+  min-width: 0;
+  padding: 1.5rem 1.25rem 1.25rem;
+  border: var(--border-thickness) solid var(--border);
+  transition: border-color var(--border-hover-transition);
+}
+.panel:hover, .panel:focus-within { border-color: var(--border-hover); }
+.label {
+  position: absolute;
+  top: -0.7rem;
+  left: 8px;
+  max-width: calc(100% - 16px);
+  padding: 0 4px;
+  background: var(--bg-4);
+  color: var(--text-4);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--border-hover-transition);
+}
+.panel:hover > .label, .panel:focus-within > .label { color: var(--accent-1); }
+
+/* ---------- page shell + top bar ---------- */
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.5rem var(--gap) var(--gap);
+  display: grid;
+  gap: var(--row-gap);
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 18px;
+  padding: 0.5rem 0.75rem;
+}
+.prompt { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--text-1); font-weight: 500; white-space: nowrap; }
+.prompt .dim { color: var(--text-4); font-weight: 300; }
+.prompt:hover { text-decoration: none; color: var(--accent-1); }
+.tabs { display: flex; flex-wrap: wrap; gap: 2px; margin-left: auto; }
+.tabs[hidden] { display: none; }
+.tabs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 10px;
+  color: var(--text-3);
+  font-size: 0.9375rem;
+  transition: background var(--list-item-transition), color var(--list-item-transition);
+}
+.tabs a .n { color: var(--text-4); }
+.tabs a:hover { background: var(--hover); color: var(--text-1); text-decoration: none; }
+.tabs a[aria-current] { background: var(--active); color: var(--text-1); }
+.tabs a[aria-current] .n { color: var(--accent-1); }
+
+/* ---------- buttons ---------- */
+
+.btn, .link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--tap);
+  padding: 0 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--button-border);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: inherit;
+  cursor: pointer;
+  transition: background var(--list-item-transition), border-color var(--list-item-transition), color var(--list-item-transition);
+}
+.btn:hover, .link-btn:hover { background: var(--bg-1); text-decoration: none; }
+.btn:active, .link-btn:active { transform: translateY(1px); }
+.btn.primary, .link-btn.primary { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); font-weight: 500; }
+.btn.primary:hover, .link-btn.primary:hover { background: var(--accent-4); border-color: var(--accent-4); }
+.link-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+.link-btn[aria-pressed="true"] { border-color: var(--accent-2); color: var(--text-1); }
+
+.text-btn {
+  min-height: var(--tap);
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid var(--button-border);
+  color: var(--text-3);
+  font: inherit;
+  font-size: 0.9375rem;
+  letter-spacing: inherit;
+  cursor: pointer;
+  transition: background var(--list-item-transition), color var(--list-item-transition);
+}
+.text-btn:hover { background: var(--hover); color: var(--text-1); }
+.text-btn[hidden] { display: none; }
+
+@media (max-width: 40em) {
+  .panel { padding: 1.375rem 0.875rem 0.875rem; }
+  .tabs { margin-left: 0; }
+}

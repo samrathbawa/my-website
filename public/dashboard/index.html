@@ -6,41 +6,44 @@
   <title>Uploads · sambawa.dev</title>
   <meta name="robots" content="noindex">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#303030">
+  <meta name="theme-color" content="#1b1b1b">
 
   <script>
     (function () {
       var stored = null;
       try { stored = localStorage.getItem('theme'); } catch (e) {}
-      document.documentElement.dataset.theme = stored || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      if (stored === 'light' || stored === 'dark') document.documentElement.dataset.theme = stored;
     })();
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Fragment+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/system24.css">
   <link rel="stylesheet" href="/dashboard/uploads.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23303030'/%3E%3Ctext x='50' y='67' font-size='46' text-anchor='middle' font-family='monospace' fill='%23f2f2f2'%3ESB%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231b1b1b'/%3E%3Ctext x='50' y='66' font-size='44' text-anchor='middle' font-family='monospace' fill='%2378c4d8'%3ESB%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 
-  <header class="site-header">
-    <a class="wordmark" href="/">sambawa<span class="tld">.dev</span></a>
-    <nav class="site-nav dash-tabs" aria-label="Dashboard" hidden>
-      <a href="#files" data-tab="files">Files</a>
-      <a href="#embed" data-tab="embed">Embed</a>
-      <a href="#sharex" data-tab="sharex">ShareX</a>
+  <div class="page">
+
+  <header class="topbar panel">
+    <span class="label" aria-hidden="true">sambawa.dev</span>
+    <a class="prompt" href="/"><span class="dim">~/</span>uploads</a>
+    <nav class="tabs dash-tabs" aria-label="Dashboard" hidden>
+      <a href="#files" data-tab="files"><span class="n" aria-hidden="true">1:</span>files</a>
+      <a href="#embed" data-tab="embed"><span class="n" aria-hidden="true">2:</span>embed</a>
+      <a href="#sharex" data-tab="sharex"><span class="n" aria-hidden="true">3:</span>sharex</a>
     </nav>
-    <button id="lock" class="text-btn" type="button" hidden>Lock</button>
+    <button id="lock" class="text-btn" type="button" hidden>lock</button>
   </header>
 
   <main>
 
     <!-- Locked -->
-    <section id="unlock" class="dash-panel narrow">
-      <h1>Uploads</h1>
-      <p class="muted">Enter the upload key to manage files.</p>
+    <section id="unlock" class="dash-panel panel narrow">
+      <h1 class="label">uploads</h1>
+      <p class="panel-head lead">Enter the upload key to manage files.</p>
       <form id="unlock-form" class="stack-form">
         <label>
           <span>Upload key</span>
@@ -52,9 +55,9 @@
     </section>
 
     <!-- Files -->
-    <section id="files" class="dash-panel" hidden>
+    <section id="files" class="dash-panel panel" hidden>
+      <h1 class="label">files</h1>
       <div class="panel-head">
-        <h1>Files</h1>
         <p id="stats" class="muted mono"></p>
         <p id="retention" class="muted"></p>
       </div>
@@ -71,10 +74,10 @@
     </section>
 
     <!-- Embed -->
-    <section id="embed" class="dash-panel" hidden>
+    <section id="embed" class="dash-panel panel" hidden>
+      <h1 class="label">embed</h1>
       <div class="panel-head">
-        <h1>Embed</h1>
-        <p class="muted">How links look when pasted in Discord.</p>
+        <p class="lead">How links look when pasted in Discord.</p>
       </div>
 
       <div class="embed-layout">
@@ -116,7 +119,7 @@
         </form>
 
         <div class="preview-wrap">
-          <p class="mono muted">Preview</p>
+          <p class="muted">preview</p>
           <div class="discord">
             <div id="pv-link" class="pv-link">https://sambawa.dev/k3Fq9xPa</div>
             <div id="pv-embed" class="pv-embed">
@@ -133,10 +136,10 @@
     </section>
 
     <!-- ShareX -->
-    <section id="sharex" class="dash-panel narrow" hidden>
+    <section id="sharex" class="dash-panel panel narrow" hidden>
+      <h1 class="label">sharex</h1>
       <div class="panel-head">
-        <h1>ShareX</h1>
-        <p class="muted">Capture, upload, and copy the link in one keystroke.</p>
+        <p class="lead">Capture, upload, and copy the link in one keystroke.</p>
       </div>
       <ol class="steps">
         <li>Download the config below. It contains your upload key, so don’t share it.</li>
@@ -149,6 +152,8 @@
     </section>
 
   </main>
+
+  </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 

@@ -276,16 +276,16 @@ async function deletionLink(request, env, url) {
   const token = url.searchParams.get('token') || '';
   const obj = id && token ? await env.UPLOADS.head(fileKey(id)) : null;
   if (!obj || obj.customMetadata?.del !== token) {
-    return html(shell('Not found', '', '<h1>Link expired</h1><p class="muted">This file doesn’t exist or was already deleted.</p>'), 404);
+    return html(shell('Not found', '', '<h1>Link expired</h1><p class="muted">This file doesn’t exist or was already deleted.</p>', 'not found'), 404);
   }
   const name = esc(fileName(obj, id));
   if (request.method === 'POST') {
     await deleteUpload(env, id);
-    return html(shell('Deleted', '', `<h1>Deleted</h1><p class="muted">${name} is gone.</p>`));
+    return html(shell('Deleted', '', `<h1>Deleted</h1><p class="muted">${name} is gone.</p>`, 'delete'));
   }
   return html(shell('Delete file', '', `<h1>Delete ${name}?</h1>
     <p class="muted">${formatBytes(obj.size)} · uploaded ${formatDate(obj.uploaded)}. This can’t be undone.</p>
-    <form method="post"><button class="link-btn primary" type="submit">Delete file</button></form>`));
+    <form method="post"><button class="link-btn primary" type="submit">Delete file</button></form>`, 'delete'));
 }
 
 /* ---------- settings ---------- */
@@ -379,7 +379,7 @@ function viewerPage(obj, id, settings, origin, text) {
   return shell(title || name, meta.filter(Boolean).join('\n  '), body);
 }
 
-function shell(title, head, body) {
+function shell(title, head, body, label = 'file') {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -393,21 +393,27 @@ function shell(title, head, body) {
     (function () {
       var stored = null;
       try { stored = localStorage.getItem('theme'); } catch (e) {}
-      document.documentElement.dataset.theme = stored || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      if (stored === 'light' || stored === 'dark') document.documentElement.dataset.theme = stored;
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Fragment+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/system24.css">
   <link rel="stylesheet" href="/dashboard/uploads.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23303030'/%3E%3Ctext x='50' y='67' font-size='46' text-anchor='middle' font-family='monospace' fill='%23f2f2f2'%3ESB%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231b1b1b'/%3E%3Ctext x='50' y='66' font-size='44' text-anchor='middle' font-family='monospace' fill='%2378c4d8'%3ESB%3C/text%3E%3C/svg%3E">
 </head>
-<body class="file-page">
-  <header class="site-header">
-    <a class="wordmark" href="/">sambawa<span class="tld">.dev</span></a>
-  </header>
-  <main>${body}</main>
+<body>
+  <div class="page">
+    <header class="topbar panel">
+      <span class="label" aria-hidden="true">sambawa.dev</span>
+      <a class="prompt" href="/"><span class="dim">~/</span>sam</a>
+    </header>
+    <main class="panel file-panel">
+      <span class="label" aria-hidden="true">${esc(label)}</span>
+      ${body}
+    </main>
+  </div>
 </body>
 </html>`;
 }

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sam Bawa · race car firmware, CS at Cal Poly Pomona</title>
+  <meta name="description" content="Samrath Bawa: CS student at Cal Poly Pomona and software captain on Bronco Electric Motorsports, writing firmware for an electric race car.">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#1b1b1b">
+  <link rel="canonical" href="https://sambawa.dev/">
+  <meta property="og:title" content="Sam Bawa · race car firmware, CS at Cal Poly Pomona">
+  <meta property="og:description" content="Software captain on Bronco Electric Motorsports. Firmware, CAN bus, sim-racing tools.">
+  <meta property="og:url" content="https://sambawa.dev/">
+  <meta property="og:type" content="website">
+
+  <script>
+    // Apply a saved theme before first paint; with none saved, CSS follows the OS setting.
+    (function () {
+      var forced = new URLSearchParams(location.search).get('theme');
+      var stored = null;
+      try { stored = localStorage.getItem('theme'); } catch (e) {}
+      var theme = forced || stored;
+      if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231b1b1b'/%3E%3Ctext x='50' y='66' font-size='44' text-anchor='middle' font-family='monospace' fill='%2378c4d8'%3ESB%3C/text%3E%3C/svg%3E">
+  <style>
+    /* Portfolio in the system24 style (github.com/refact0r/system24), laid out as a normal page.
+       Tokens follow system24.theme.css and its light flavor, with the muted grays raised
+       so every piece of text clears WCAG AA (4.5:1). --text-5 is for decoration only. */
+    :root {
+      --text-0: var(--bg-4);
+      --text-1: oklch(95% 0 0);
+      --text-2: oklch(85% 0 0);
+      --text-3: oklch(75% 0 0);
+      --text-4: oklch(64% 0 0);   /* 5.5:1 on --bg-4 */
+      --text-5: oklch(40% 0 0);   /* decorative glyphs only */
+
+      --bg-1: oklch(31% 0 0);
+      --bg-2: oklch(27% 0 0);
+      --bg-3: oklch(23% 0 0);
+      --bg-4: oklch(19% 0 0);
+      --hover: oklch(54% 0 0 / 0.1);
+      --active: oklch(54% 0 0 / 0.2);
+
+      --accent-1: oklch(75% 0.11 215);   /* links */
+      --accent-2: oklch(70% 0.11 215);   /* hover borders, focus ring */
+      --accent-3: oklch(65% 0.11 215);   /* primary button */
+      --accent-4: oklch(60% 0.11 215);   /* primary button hover */
+      --on-accent: var(--bg-4);
+      --online: oklch(70% 0.12 170);
+      --cal-0: var(--bg-2);
+      --cal-1: oklch(38% 0.05 170);
+      --cal-2: oklch(50% 0.08 170);
+      --cal-3: oklch(60% 0.10 170);
+      --cal-4: oklch(70% 0.12 170);
+
+      --border: var(--active);
+      --border-hover: var(--accent-2);
+      --button-border: hsl(220, 0%, 100%, 0.12);
+
+      --gap: 12px;
+      --row-gap: 30px;
+      --border-thickness: 2px;
+      --border-hover-transition: 0.2s ease;
+      --list-item-transition: 0.15s ease;
+      --tap: 2.75rem;   /* 44px touch target */
+    }
+
+    /* system24 light flavor, blue accent darkened for contrast on light gray */
+    :root[data-theme="light"] {
+      --text-1: oklch(20% 0 0);
+      --text-2: oklch(25% 0 0);
+      --text-3: oklch(30% 0 0);
+      --text-4: oklch(48% 0 0);   /* 5.5:1 on --bg-4 */
+      --text-5: oklch(70% 0 0);
+      --bg-1: oklch(82% 0 0);
+      --bg-2: oklch(86% 0 0);
+      --bg-3: oklch(90% 0 0);
+      --bg-4: oklch(94% 0 0);
+      --hover: oklch(50% 0 0 / 0.1);
+      --active: oklch(50% 0 0 / 0.2);
+      --accent-1: oklch(48% 0.11 215);
+      --accent-2: oklch(55% 0.11 215);
+      --accent-3: oklch(70% 0.11 215);
+      --accent-4: oklch(65% 0.11 215);
+      --on-accent: oklch(20% 0 0);
+      --online: oklch(60% 0.12 170);
+      --cal-0: var(--bg-2);
+      --cal-1: oklch(85% 0.06 170);
+      --cal-2: oklch(75% 0.09 170);
+      --cal-3: oklch(65% 0.11 170);
+      --cal-4: oklch(55% 0.12 170);
+      --button-border: hsl(220, 0%, 0%, 0.14);
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --text-1: oklch(20% 0 0);
+        --text-2: oklch(25% 0 0);
+        --text-3: oklch(30% 0 0);
+        --text-4: oklch(48% 0 0);
+        --text-5: oklch(70% 0 0);
+        --bg-1: oklch(82% 0 0);
+        --bg-2: oklch(86% 0 0);
+        --bg-3: oklch(90% 0 0);
+        --bg-4: oklch(94% 0 0);
+        --hover: oklch(50% 0 0 / 0.1);
+        --active: oklch(50% 0 0 / 0.2);
+        --accent-1: oklch(48% 0.11 215);
+        --accent-2: oklch(55% 0.11 215);
+        --accent-3: oklch(70% 0.11 215);
+        --accent-4: oklch(65% 0.11 215);
+        --on-accent: oklch(20% 0 0);
+        --online: oklch(60% 0.12 170);
+        --cal-0: var(--bg-2);
+        --cal-1: oklch(85% 0.06 170);
+        --cal-2: oklch(75% 0.09 170);
+        --cal-3: oklch(65% 0.11 170);
+        --cal-4: oklch(55% 0.12 170);
+        --button-border: hsl(220, 0%, 0%, 0.14);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; scroll-padding-bottom: 4.5rem; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+    body {
+      margin: 0;
+      background: var(--bg-4);
+      color: var(--text-3);
+      font-family: 'DM Mono', ui-monospace, Consolas, monospace;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.6;
+      letter-spacing: -0.05ch;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent-1); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong, b { font-weight: 500; color: var(--text-2); }
+    ::selection { background: var(--accent-3); color: var(--on-accent); }
+    :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+    h1, h2, h3, p { margin: 0; font-size: inherit; }
+
+    .skip {
+      position: absolute;
+      left: var(--gap);
+      top: -100px;
+      z-index: 50;
+      padding: 10px 14px;
+      background: var(--accent-3);
+      color: var(--on-accent);
+      font-weight: 500;
+    }
+    .skip:focus { top: var(--gap); }
+
+    /* ---------- panels + labels ---------- */
+
+    .panel {
+      position: relative;
+      min-width: 0;
+      padding: 1.5rem 1.25rem 1.25rem;
+      border: var(--border-thickness) solid var(--border);
+      transition: border-color var(--border-hover-transition);
+    }
+    .panel:hover, .panel:focus-within { border-color: var(--border-hover); }
+    .label {
+      position: absolute;
+      top: -0.7rem;
+      left: 8px;
+      padding: 0 4px;
+      background: var(--bg-4);
+      color: var(--text-4);
+      font-weight: 500;
+      font-size: 1rem;
+      line-height: 1.2rem;
+      transition: color var(--border-hover-transition);
+    }
+    .panel:hover > .label, .panel:focus-within > .label { color: var(--accent-1); }
+
+    /* ---------- layout ---------- */
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.5rem var(--gap) var(--gap);
+      display: grid;
+      gap: var(--row-gap);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--row-gap) var(--gap);
+    }
+    @media (min-width: 56.25em) {
+      .grid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+      .span-2 { grid-column: 1 / -1; }
+    }
+
+    /* top bar */
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 18px;
+      padding: 0.5rem 0.75rem;
+    }
+    .prompt { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--text-1); font-weight: 500; white-space: nowrap; }
+    .prompt .dim { color: var(--text-4); font-weight: 300; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 2px; margin-left: auto; }
+    .tabs a {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--tap);
+      padding: 0 10px;
+      color: var(--text-3);
+      font-size: 0.9375rem;
+      transition: background var(--list-item-transition), color var(--list-item-transition);
+    }
+    .tabs a .n { color: var(--text-4); }
+    .tabs a:hover { background: var(--hover); color: var(--text-1); text-decoration: none; }
+    .tabs a[aria-current] { background: var(--active); color: var(--text-1); }
+    .tabs a[aria-current] .n { color: var(--accent-1); }
+    .theme-btn {
+      min-height: var(--tap);
+      min-width: var(--tap);
+      padding: 0 12px;
+      background: transparent;
+      border: 1px solid var(--button-border);
+      color: var(--text-3);
+      font: inherit;
+      font-size: 0.9375rem;
+      letter-spacing: inherit;
+      cursor: pointer;
+      transition: background var(--list-item-transition), color var(--list-item-transition);
+    }
+    .theme-btn:hover { background: var(--hover); color: var(--text-1); }
+
+    /* about */
+    .banner {
+      margin: 0.25rem 0 1.25rem;
+      color: var(--accent-1);
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-weight: 400;
+      font-size: clamp(3.5px, 1.85vw, 13px);
+      line-height: 1.05;
+      letter-spacing: 0;
+      white-space: pre;
+      overflow: hidden;
+    }
+    @media (min-width: 56.25em) { .banner { font-size: clamp(5px, 1.2vw, 13px); } }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .intro { max-width: 62ch; color: var(--text-3); }
+    .buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.25rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: var(--tap);
+      padding: 0 16px;
+      background: var(--bg-2);
+      border: 1px solid var(--button-border);
+      color: var(--text-2);
+      font-size: 0.9375rem;
+      font-weight: 400;
+      transition: background var(--list-item-transition);
+    }
+    .btn:hover { background: var(--bg-1); text-decoration: none; }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); font-weight: 500; }
+    .btn.primary:hover { background: var(--accent-4); border-color: var(--accent-4); }
+
+    /* now */
+    .now-list { list-style: none; margin: 0; padding: 0; }
+    .now-list li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .now-list li:first-child { padding-top: 0; }
+    .now-list li:last-child { border-bottom: 0; }
+    .now-role { color: var(--text-1); font-weight: 500; line-height: 1.35; }
+    .now-org { color: var(--text-4); font-size: 0.875rem; line-height: 1.45; }
+    .progress { margin-top: 1rem; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--text-4); margin-bottom: 4px; }
+    .bar { position: relative; height: 24px; background: var(--bg-2); font-size: 0.8125rem; line-height: 24px; overflow: hidden; }
+    .bar-fill { position: absolute; inset: 0 auto 0 0; background: var(--accent-3); }
+    .bar-text { position: absolute; inset: 0; display: flex; justify-content: space-between; padding: 0 6px; color: var(--text-2); font-weight: 400; }
+    .bar-text .done { color: var(--on-accent); font-weight: 500; }
+
+    /* stack */
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); gap: 1.25rem; }
+    .stack-head { color: var(--text-2); font-size: 0.875rem; font-weight: 500; margin-bottom: 8px; }
+    .stack-head::before { content: "── "; color: var(--text-5); font-weight: 300; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+    .chip {
+      padding: 1px 8px;
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      font-size: 0.875rem;
+      font-weight: 400;
+    }
+
+    /* cards (inner boxes) */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); gap: var(--gap); }
+    /* The top edge is drawn by the title row (line, title, line), so long titles can wrap
+       while the first line stays on the border. */
+    .card {
+      margin-top: 0.75rem;
+      padding: 0 1rem 1rem;
+      border: 1px solid var(--border);
+      border-top: 0;
+      transition: border-color var(--border-hover-transition);
+    }
+    .card:hover, .card:focus-within { border-color: var(--border-hover); }
+    .card-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin: -0.7em -1rem 0.375rem;
+      color: var(--text-1);
+      font-size: 1.0625rem;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .card-title::before,
+    .card-title::after {
+      content: "";
+      height: 1px;
+      margin-top: 0.7em;
+      background: var(--border);
+      transition: background var(--border-hover-transition);
+    }
+    .card-title::before { flex: 0 0 10px; }
+    .card-title::after { flex: 1 1 0; min-width: 12px; }
+    .card:hover > .card-title::before, .card:hover > .card-title::after,
+    .card:focus-within > .card-title::before, .card:focus-within > .card-title::after { background: var(--border-hover); }
+    .card-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; align-items: baseline; }
+    .card-kicker { color: var(--text-4); font-size: 0.8125rem; }
+    .card-title a { min-width: 0; color: var(--text-1); }
+    .card-title a::after { content: " ↗"; color: var(--text-4); }
+    .card-title a:hover { color: var(--accent-1); }
+    .card-desc { margin-top: 6px; color: var(--text-3); font-size: 0.9375rem; max-width: 70ch; }
+    .card-desc:empty { display: none; }
+    .card ul { margin: 6px 0 0; padding-left: 18px; font-size: 0.9375rem; }
+    .card li { margin: 4px 0; }
+    .card li::marker { color: var(--text-4); }
+    .card-foot { margin-top: 10px; color: var(--text-4); font-size: 0.8125rem; }
+    .card-foot:empty { display: none; }
+    .when { color: var(--text-4); font-size: 0.8125rem; white-space: nowrap; }
+
+    .cert-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); gap: 0 var(--gap); list-style: none; margin: 0; padding: 0; }
+    .cert-list .card-title { font-size: 0.9375rem; }
+    .cert-list .card-title a { text-decoration: underline; text-decoration-color: var(--text-5); text-underline-offset: 3px; }
+    .cert-list .card-title a:hover { text-decoration-color: currentColor; }
+    .cert-issuer { color: var(--text-4); font-size: 0.8125rem; }
+
+    /* activity */
+    .calendar-scroll { overflow-x: auto; padding-bottom: 4px; }
+    .calendar {
+      display: grid;
+      grid-template-rows: repeat(7, 9px);
+      grid-auto-flow: column;
+      grid-auto-columns: 9px;
+      gap: 3px;
+      width: max-content;
+    }
+    .calendar i { background: var(--cal-0); }
+    .calendar i[data-l="1"] { background: var(--cal-1); }
+    .calendar i[data-l="2"] { background: var(--cal-2); }
+    .calendar i[data-l="3"] { background: var(--cal-3); }
+    .calendar i[data-l="4"] { background: var(--cal-4); }
+    .activity-summary { margin-top: 10px; color: var(--text-4); font-size: 0.875rem; }
+    .activity-summary a { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* resume */
+    .resume-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 1rem; }
+    .resume-head p { color: var(--text-3); font-size: 0.9375rem; }
+    .resume-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+    @media (min-width: 56.25em) { .resume-cols { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
+    .resume-col { display: grid; gap: var(--gap); align-content: start; }
+
+    /* contact */
+    .contact-lead { color: var(--text-3); }
+    .contact-mail {
+      display: inline-block;
+      margin: 4px 0 2px;
+      color: var(--text-1);
+      font-size: clamp(1.125rem, 3vw, 1.625rem);
+      font-weight: 500;
+      overflow-wrap: anywhere;
+      text-decoration: underline;
+      text-decoration-color: var(--accent-2);
+      text-underline-offset: 5px;
+    }
+    .contact-mail:hover { color: var(--accent-1); }
+    .fineprint { margin-top: 1.25rem; color: var(--text-4); font-size: 0.8125rem; }
+
+    /* status bar */
+    .statusbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 6px 14px;
+      background: var(--bg-4);
+      font-size: 0.875rem;
+      color: var(--text-4);
+      z-index: 10;
+    }
+    .statusbar .session { color: var(--on-accent); background: var(--accent-3); padding: 0 6px; font-weight: 500; }
+    .statusbar .current { color: var(--text-2); }
+    .statusbar .right { margin-left: auto; white-space: nowrap; }
+    .statusbar .right .dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; background: var(--online); }
+    /* Sticky only where there is room; on phones it would cover content. */
+    @media (min-width: 40em) { .statusbar { position: sticky; bottom: var(--gap); } }
+
+    @media (max-width: 40em) {
+      .panel { padding: 1.375rem 0.875rem 0.875rem; }
+      .tabs { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="page">
+
+    <header class="topbar panel">
+      <span class="label" aria-hidden="true">sambawa.dev</span>
+      <a class="prompt" href="#about"><span class="dim">~/</span>sam</a>
+      <nav class="tabs" aria-label="Main">
+        <a href="#about"><span class="n" aria-hidden="true">1:</span>about</a>
+        <a href="#stack"><span class="n" aria-hidden="true">2:</span>stack</a>
+        <a href="#projects"><span class="n" aria-hidden="true">3:</span>projects</a>
+        <a href="#activity"><span class="n" aria-hidden="true">4:</span>activity</a>
+        <a href="#resume"><span class="n" aria-hidden="true">5:</span>resume</a>
+        <a href="#contact"><span class="n" aria-hidden="true">6:</span>contact</a>
+      </nav>
+      <button class="theme-btn" id="theme-toggle" type="button" aria-label="Switch to light theme">◐ light</button>
+    </header>
+
+    <main class="grid" id="main">
+
+      <section class="panel" id="about" aria-labelledby="name">
+        <span class="label" aria-hidden="true">about</span>
+        <pre class="banner" aria-hidden="true">███████╗ █████╗ ███╗   ███╗    ██████╗  █████╗ ██╗    ██╗ █████╗
+██╔════╝██╔══██╗████╗ ████║    ██╔══██╗██╔══██╗██║    ██║██╔══██╗
+███████╗███████║██╔████╔██║    ██████╔╝███████║██║ █╗ ██║███████║
+╚════██║██╔══██║██║╚██╔╝██║    ██╔══██╗██╔══██║██║███╗██║██╔══██║
+███████║██║  ██║██║ ╚═╝ ██║    ██████╔╝██║  ██║╚███╔███╔╝██║  ██║
+╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚═════╝ ╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝  ╚═╝</pre>
+        <h1 class="sr-only" id="name">Samrath Bawa</h1>
+        <p class="intro">
+          I write firmware for an electric race car. As software captain on Bronco Electric Motorsports,
+          our Formula SAE Electric student team, I lead 7 developers, write the car's C++ for Teensy 4.1
+          and ESP32, and run its CAN bus network. I also build sim-racing tools.
+        </p>
+        <div class="buttons">
+          <a class="btn primary" href="https://sambawa.dev/resume" target="_blank" rel="noopener noreferrer">Download resume (PDF) ↓</a>
+          <a class="btn" href="https://github.com/samrathbawa" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a class="btn" href="https://www.linkedin.com/in/sam-bawa/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+          <a class="btn" href="mailto:samrathbawa@outlook.com">Email me</a>
+        </div>
+      </section>
+
+      <aside class="panel" aria-labelledby="now-h">
+        <h2 class="label" id="now-h">now</h2>
+        <ul class="now-list">
+          <li><div class="now-role">Software Captain</div><div class="now-org">Bronco Electric Motorsports · since Oct 2026</div></li>
+          <li><div class="now-role">AI Training Fellow</div><div class="now-org">Handshake AI · since Jul 2026</div></li>
+          <li><div class="now-role">B.S. Computer Science</div><div class="now-org">Cal Poly Pomona · GPA 3.61 · Dean's List</div></li>
+        </ul>
+        <div class="progress">
+          <div class="progress-label"><span>degree progress</span><span>2025 → 2029</span></div>
+          <div class="bar" id="degree-bar" role="progressbar" aria-label="Degree progress" aria-valuemin="0" aria-valuemax="100">
+            <div class="bar-fill" id="degree-fill"></div>
+            <div class="bar-text" aria-hidden="true"><span class="done" id="degree-pct">--%</span><span>2029</span></div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel span-2" id="stack" aria-labelledby="stack-h">
+        <h2 class="label" id="stack-h">stack</h2>
+        <div class="stack-grid">
+          <div>
+            <h3 class="stack-head">languages</h3>
+            <ul class="chips"><li class="chip">C++</li><li class="chip">Java</li><li class="chip">Python</li><li class="chip">R</li><li class="chip">JavaScript</li><li class="chip">HTML</li><li class="chip">CSS</li><li class="chip">x86 Assembly</li></ul>
+          </div>
+          <div>
+            <h3 class="stack-head">embedded</h3>
+            <ul class="chips"><li class="chip">Teensy 4.1</li><li class="chip">ESP32</li><li class="chip">CAN bus</li><li class="chip">PlatformIO</li><li class="chip">Altium</li><li class="chip">KiCad</li></ul>
+          </div>
+          <div>
+            <h3 class="stack-head">cad + analysis</h3>
+            <ul class="chips"><li class="chip">SolidWorks</li><li class="chip">Fusion 360</li><li class="chip">Ansys (FEA)</li></ul>
+          </div>
+          <div>
+            <h3 class="stack-head">tools</h3>
+            <ul class="chips"><li class="chip">Git</li><li class="chip">pandas</li><li class="chip">JUnit</li><li class="chip">REST APIs</li></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel span-2" id="projects" aria-labelledby="projects-h">
+        <h2 class="label" id="projects-h">projects</h2>
+        <div class="cards">
+          <article class="card" data-repo="ForzaFFB">
+            <h3 class="card-title"><a href="https://github.com/samrathbawa/ForzaFFB" target="_blank" rel="noopener noreferrer">ForzaFFB</a></h3>
+            <div class="card-top"><span class="card-kicker">GitHub repo</span><span class="when" data-slot="updated"></span></div>
+            <p class="card-desc" data-slot="desc">Turns live car data from a racing game into steering forces on a real wheel, using virtual device drivers.</p>
+            <p class="card-foot" data-slot="meta"></p>
+          </article>
+          <article class="card" data-repo="macro">
+            <h3 class="card-title"><a href="https://github.com/samrathbawa/macro" target="_blank" rel="noopener noreferrer">macro</a></h3>
+            <div class="card-top"><span class="card-kicker">GitHub repo</span><span class="when" data-slot="updated"></span></div>
+            <p class="card-desc" data-slot="desc"></p>
+            <p class="card-foot" data-slot="meta"></p>
+          </article>
+          <article class="card">
+            <h3 class="card-title">Race car dashboard and steering wheel display</h3>
+            <div class="card-top"><span class="card-kicker">Teensy · CAN bus · Altium</span></div>
+            <ul>
+              <li>Designed a sunlight readable CAN wheel display and a Teensy 4.1 dashboard schematic for the car</li>
+              <li>Migrated the team's ESP32 sensor board from KiCad to Altium, verifying all 110 parts and 75 nets</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3 class="card-title">Accelerator pedal stress analysis</h3>
+            <div class="card-top"><span class="card-kicker">SolidWorks · Ansys</span></div>
+            <ul>
+              <li>Ran FEA on the pedal shock mounts, found the stock part too close to failing, and designed an aluminum pedal stop (safety factor 2.4)</li>
+              <li>Built a posable 95th percentile driver model in SolidWorks to check the car against the FSAE driver fit rules</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel span-2" id="activity" aria-labelledby="activity-h">
+        <h2 class="label" id="activity-h">activity</h2>
+        <div class="calendar-scroll"><div id="calendar" class="calendar" aria-hidden="true"></div></div>
+        <p class="activity-summary" id="activity-summary" aria-live="polite">Loading GitHub contributions…</p>
+      </section>
+
+      <section class="panel span-2" id="certifications" aria-labelledby="certs-h">
+        <h2 class="label" id="certs-h">certifications</h2>
+        <ul class="cert-list">
+          <li class="card"><h3 class="card-title"><a href="https://www.coursera.org/account/accomplishments/records/83KXJAZGQYKS" target="_blank" rel="noopener noreferrer">Supervised Machine Learning: Regression and Classification</a></h3><div class="cert-issuer">Stanford CPD · DeepLearning.AI</div></li>
+          <li class="card"><h3 class="card-title"><a href="https://www.coursera.org/account/accomplishments/records/KDFBJ7DLZZNN" target="_blank" rel="noopener noreferrer">Advanced Learning Algorithms</a></h3><div class="cert-issuer">Stanford CPD · DeepLearning.AI</div></li>
+          <li class="card"><h3 class="card-title"><a href="https://www.coursera.org/account/accomplishments/records/LH78K3N42TT5" target="_blank" rel="noopener noreferrer">Unsupervised Learning, Recommenders, Reinforcement Learning</a></h3><div class="cert-issuer">Stanford CPD · DeepLearning.AI</div></li>
+          <li class="card"><h3 class="card-title"><a href="https://verify.skilljar.com/c/8kb7ysbuvvz6" target="_blank" rel="noopener noreferrer">Claude 101</a></h3><div class="cert-issuer">Anthropic</div></li>
+        </ul>
+      </section>
+
+      <section class="panel span-2" id="resume" aria-labelledby="resume-h">
+        <h2 class="label" id="resume-h">resume</h2>
+        <div class="resume-head">
+          <p>Experience and education at a glance. The PDF has everything on one page.</p>
+          <a class="btn primary" href="https://sambawa.dev/resume" target="_blank" rel="noopener noreferrer">Download resume (PDF) ↓</a>
+        </div>
+        <div class="resume-cols">
+          <div class="resume-col">
+            <article class="card">
+              <h3 class="card-title">Software Captain</h3>
+              <div class="card-top"><span class="card-kicker">Bronco Electric Motorsports (FSAE Electric)</span><span class="when">Oct 2026 – present</span></div>
+              <ul>
+                <li>Lead a software team of 7 on the electric race car and set its code, Git, and documentation standards</li>
+                <li>Develop the car's firmware in C++ for Teensy 4.1 and ESP32 microcontrollers using PlatformIO, and own the CAN bus network linking the dashboard, wheel display, and sensor board</li>
+                <li>Review team members' pull requests to enforce the team's code standards</li>
+                <li>Refactored last year's full firmware codebase into modules that the new car is built on</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3 class="card-title">AI Training Fellow</h3>
+              <div class="card-top"><span class="card-kicker">Handshake AI · remote</span><span class="when">Jul 2026 – present</span></div>
+              <ul>
+                <li>Design hard questions about charts, tables, and images to find where AI models break, tagging each by the kind of reasoning it tests</li>
+                <li>Author money and tax questions that can only be answered by reading through five or more documents</li>
+                <li>Build grading rubrics that score AI answers point by point, and document what each answer got wrong as training data</li>
+                <li>Rate and caption AI generated video, images, and audio against a detailed style guide</li>
+              </ul>
+            </article>
+          </div>
+          <div class="resume-col">
+            <article class="card">
+              <h3 class="card-title">B.S. Computer Science</h3>
+              <div class="card-top"><span class="card-kicker">Cal Poly Pomona</span><span class="when">2025 – 2029</span></div>
+              <p class="card-desc">GPA 3.61 · Dean's List</p>
+              <p class="card-foot">Data Structures and Algorithms, Computer Organization and Assembly, Systems Programming, C++, Discrete Structures, UI Design, Probability and Statistics</p>
+            </article>
+            <article class="card">
+              <h3 class="card-title">Vice President</h3>
+              <div class="card-top"><span class="card-kicker">Woodbridge HS Web Dev Club</span><span class="when">2023 – 2025</span></div>
+              <p class="card-desc">Taught members HTML, CSS, and JavaScript and built websites for clients such as other clubs and teachers.</p>
+            </article>
+            <article class="card">
+              <h3 class="card-title">Jr. Auxiliary Volunteer</h3>
+              <div class="card-top"><span class="card-kicker">Hoag Hospital</span><span class="when">2024 – 2025</span></div>
+              <p class="card-desc">Supported patients, visitors, and staff with wayfinding and wheelchair services.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="panel" id="contact" aria-labelledby="contact-h">
+      <h2 class="label" id="contact-h">contact</h2>
+      <p class="contact-lead">Email is the fastest way to reach me.</p>
+      <a class="contact-mail" href="mailto:samrathbawa@outlook.com">samrathbawa@outlook.com</a>
+      <div class="buttons">
+        <a class="btn" href="https://github.com/samrathbawa" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="btn" href="https://www.linkedin.com/in/sam-bawa/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        <a class="btn" href="https://sambawa.dev/resume" target="_blank" rel="noopener noreferrer">Download resume (PDF) ↓</a>
+      </div>
+      <p class="fineprint">© <span id="year">2026</span> Samrath Bawa</p>
+    </footer>
+
+    <div class="statusbar panel" aria-hidden="true">
+      <span class="session">sam</span>
+      <span class="current" id="status-current">1:about</span>
+      <span class="right"><span class="dot"></span><span id="clock">--:--</span></span>
+    </div>
+
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var CONFIG = {
+        user: 'samrathbawa',
+        repos: ['ForzaFFB', 'macro'],
+        repoCacheTtl: 30 * 60 * 1000,
+        calendarCacheTtl: 60 * 60 * 1000,
+        degreeStart: '2025-08-21',
+        degreeEnd: '2029-05-20'
+      };
+
+      /* ---------- theme ---------- */
+
+      var toggle = document.getElementById('theme-toggle');
+      var prefersLight = window.matchMedia('(prefers-color-scheme: light)');
+      function currentTheme() {
+        return document.documentElement.dataset.theme || (prefersLight.matches ? 'light' : 'dark');
+      }
+      function applyToggleLabel() {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        toggle.textContent = '◐ ' + next;
+        toggle.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+      }
+      // Hidden door: 10 theme toggles within 5 s opens the uploads dashboard.
+      var toggleClicks = [];
+      toggle.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch (e) {}
+        applyToggleLabel();
+
+        var now = Date.now();
+        toggleClicks = toggleClicks.filter(function (t) { return now - t < 5000; });
+        toggleClicks.push(now);
+        if (toggleClicks.length >= 10) location.href = '/dashboard/';
+      });
+      prefersLight.addEventListener('change', applyToggleLabel);
+      applyToggleLabel();
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      /* ---------- tabs: scroll spy ---------- */
+
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabs a'));
+      var targets = tabs.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+      var statusCurrent = document.getElementById('status-current');
+
+      function setCurrent(i) {
+        tabs.forEach(function (a, j) {
+          if (i === j) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        });
+        statusCurrent.textContent = tabs[i].textContent;
+      }
+
+      function spy() {
+        var line = window.innerHeight * 0.35;
+        var idx = 0;
+        targets.forEach(function (t, i) { if (t.getBoundingClientRect().top <= line) idx = i; });
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) idx = targets.length - 1;
+        setCurrent(idx);
+      }
+      window.addEventListener('scroll', spy, { passive: true });
+      spy();
+
+      /* ---------- clock + degree progress ---------- */
+
+      var clock = document.getElementById('clock');
+      function tick() {
+        clock.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+      tick();
+      setInterval(tick, 15000);
+
+      (function () {
+        var start = new Date(CONFIG.degreeStart).getTime();
+        var end = new Date(CONFIG.degreeEnd).getTime();
+        var pct = Math.max(0, Math.min(100, Math.round((Date.now() - start) / (end - start) * 100)));
+        document.getElementById('degree-fill').style.width = pct + '%';
+        document.getElementById('degree-pct').textContent = pct + '%';
+        var bar = document.getElementById('degree-bar');
+        bar.setAttribute('aria-valuenow', String(pct));
+        bar.setAttribute('aria-valuetext', pct + '% of the way to a 2029 graduation');
+      })();
+
+      /* ---------- cache helper ---------- */
+
+      function cacheGet(key, ttl) {
+        try {
+          var raw = localStorage.getItem(key);
+          if (!raw) return null;
+          var entry = JSON.parse(raw);
+          return { data: entry.data, fresh: (Date.now() - entry.t) < ttl };
+        } catch (e) { return null; }
+      }
+      function cacheSet(key, data) {
+        try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), data: data })); } catch (e) {}
+      }
+
+      /* ---------- repos ---------- */
+
+      function relTime(iso) {
+        var s = (Date.now() - new Date(iso).getTime()) / 1000;
+        var steps = [[31536000, 'y'], [2592000, 'mo'], [604800, 'w'], [86400, 'd'], [3600, 'h'], [60, 'm']];
+        for (var i = 0; i < steps.length; i++) {
+          if (s >= steps[i][0]) return Math.floor(s / steps[i][0]) + steps[i][1] + ' ago';
+        }
+        return 'just now';
+      }
+
+      function renderRepos(repos) {
+        var byName = {};
+        repos.forEach(function (r) { byName[r.name.toLowerCase()] = r; });
+        document.querySelectorAll('[data-repo]').forEach(function (card) {
+          var repo = byName[card.dataset.repo.toLowerCase()];
+          if (!repo) return;
+          if (repo.description) card.querySelector('[data-slot="desc"]').textContent = repo.description;
+          var parts = [];
+          if (repo.language) parts.push(repo.language);
+          if (repo.stargazers_count > 0) parts.push(repo.stargazers_count + (repo.stargazers_count === 1 ? ' star' : ' stars'));
+          if (repo.forks_count > 0) parts.push(repo.forks_count + (repo.forks_count === 1 ? ' fork' : ' forks'));
+          card.querySelector('[data-slot="meta"]').textContent = parts.join(' · ');
+          card.querySelector('[data-slot="updated"]').textContent = 'updated ' + relTime(repo.pushed_at);
+        });
+      }
+
+      function loadRepos() {
+        var cached = cacheGet('gh-repos-v3', CONFIG.repoCacheTtl);
+        if (cached && cached.fresh) { renderRepos(cached.data); return; }
+        fetch('https://api.github.com/users/' + CONFIG.user + '/repos?per_page=100')
+          .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+          .then(function (all) {
+            var wanted = all.filter(function (r) {
+              return CONFIG.repos.some(function (n) { return n.toLowerCase() === r.name.toLowerCase(); });
+            });
+            cacheSet('gh-repos-v3', wanted);
+            renderRepos(wanted);
+          })
+          .catch(function () { if (cached) renderRepos(cached.data); });
+      }
+
+      /* ---------- contribution calendar ---------- */
+
+      var calendar = document.getElementById('calendar');
+      var summary = document.getElementById('activity-summary');
+      var profile = '<a href="https://github.com/' + CONFIG.user + '" target="_blank" rel="noopener noreferrer">github.com/' + CONFIG.user + '</a>';
+
+      function renderCalendar(payload) {
+        var days = payload.contributions;
+        var frag = document.createDocumentFragment();
+        var firstDow = new Date(days[0].date + 'T00:00:00').getDay();
+        for (var p = 0; p < firstDow; p++) {
+          var pad = document.createElement('i');
+          pad.style.visibility = 'hidden';
+          frag.appendChild(pad);
+        }
+        days.forEach(function (d) {
+          var cell = document.createElement('i');
+          if (d.level > 0) cell.dataset.l = String(d.level);
+          cell.title = d.date + ' · ' + d.count + (d.count === 1 ? ' contribution' : ' contributions');
+          frag.appendChild(cell);
+        });
+        calendar.textContent = '';
+        calendar.appendChild(frag);
+        var total = payload.total && payload.total.lastYear !== undefined
+          ? payload.total.lastYear
+          : days.reduce(function (sum, d) { return sum + d.count; }, 0);
+        summary.innerHTML = total + ' GitHub contributions in the last 12 months · ' + profile;
+        var scroller = calendar.parentElement;
+        scroller.scrollLeft = scroller.scrollWidth;
+      }
+
+      function loadCalendar() {
+        var cached = cacheGet('gh-cal-v3', CONFIG.calendarCacheTtl);
+        if (cached && cached.fresh) { renderCalendar(cached.data); return; }
+        fetch('https://github-contributions-api.jogruber.de/v4/' + CONFIG.user + '?y=last')
+          .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+          .then(function (data) {
+            if (!data.contributions || !data.contributions.length) throw new Error('empty');
+            cacheSet('gh-cal-v3', data);
+            renderCalendar(data);
+          })
+          .catch(function () {
+            if (cached) { renderCalendar(cached.data); return; }
+            calendar.parentElement.hidden = true;
+            summary.innerHTML = 'The contribution calendar is unavailable right now. See ' + profile + '.';
+          });
+      }
+
+      loadRepos();
+      loadCalendar();
+    })();
+  </script>
+</body>
+</html>

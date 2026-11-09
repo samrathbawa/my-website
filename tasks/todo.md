@@ -44,3 +44,12 @@ Worker (`src/worker.js`) in front of the static site + R2 bucket `sambawa-upload
 ## 2026-11-08: Holding page
 - [x] sambawa.dev `/` now shows an "under construction" landing (name, resume, GitHub, LinkedIn, email). Hidden dashboard door kept on the theme toggle.
 - Full portfolio page parked at `design/portfolio-index.html` (not served). Restore: `git mv design/portfolio-index.html public/index.html`
+- [x] 2026-11-08: Resume PDF updated from Samrath_Bawa_Resume_1.tex via build_resume.py (phone/city stripped), verified live at /resume
+
+## 2026-11-08: system24 redesigns (local only, not deployed)
+- [x] design/system24-discord/index.html: Discord-layout portfolio in system24 style (channels, chat, members, input jumps channels)
+- [x] design/system24-site/index.html: same style as a normal scrolling page (tmux-style tabs + status bar, keys 1-6)
+- [ ] Sam picks one to go live (would replace public/index.html holding page)
+- [x] 2026-11-08: system24-site audited against vault UI/UX guide (research/2026-11-08-website-ui-ux-design-guide.md): AA contrast, landmarks + skip link + real headings, 16px body, 44px targets, light theme (system24 light flavor) following OS + toggle, removed single-key shortcuts, verb+object CTAs, sticky bar only on wide screens. Verified 320px reflow + both themes in headless Edge.
+- [x] 2026-11-08: system24-site is now the live homepage (public/index.html; resume links -> /resume). Dashboard + worker file/delete pages restyled on shared public/css/system24.css (old css/style.css + js/main.js now unused, kept for restoring design/portfolio-index.html). Hidden dashboard door kept on the theme toggle.
+- [x] design/system24-template/index.html: shareable copy with all personal info replaced by placeholders (CONFIG.user empty skips GitHub fetches)
