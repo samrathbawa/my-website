@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sam Bawa · projects, code, contact</title>
-  <meta name="description" content="Samrath Bawa: CS student at Cal Poly Pomona building sim-racing tools, input automation, and other things worth taking apart. Projects load live from GitHub.">
+  <title>Sam Bawa · under construction</title>
+  <meta name="description" content="Samrath Bawa: CS student at Cal Poly Pomona. The full site is still being built.">
   <meta name="color-scheme" content="dark light">
   <meta name="theme-color" content="#303030">
   <link rel="canonical" href="https://sambawa.dev/">
-  <meta property="og:title" content="Sam Bawa · projects, code, contact">
-  <meta property="og:description" content="CS student at Cal Poly Pomona. Sim-racing tools, input automation, live GitHub telemetry.">
+  <meta property="og:title" content="Sam Bawa · under construction">
+  <meta property="og:description" content="CS student at Cal Poly Pomona. The full site is still being built.">
   <meta property="og:url" content="https://sambawa.dev/">
   <meta property="og:type" content="website">
 
@@ -29,17 +29,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Fragment+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23303030'/%3E%3Ctext x='50' y='67' font-size='46' text-anchor='middle' font-family='monospace' fill='%23f2f2f2'%3ESB%3C/text%3E%3C/svg%3E">
+  <style>
+    /* Holding page: header pinned top, message centered in the remaining height. */
+    body { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+    .site-header { width: 100%; }
+    .holding { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-block: var(--space-12); }
+    .holding .hero-status::before {
+      content: ""; display: inline-block; width: 0.5rem; height: 0.5rem; margin-right: 0.5rem;
+      border-radius: 50%; background: var(--cal-3); vertical-align: 0.05em;
+    }
+  </style>
 </head>
 <body>
 
   <header class="site-header">
-    <a class="wordmark" href="#top">sambawa<span class="tld">.dev</span></a>
-    <nav class="site-nav" aria-label="Sections">
-      <a href="#certifications">Certifications</a>
-      <a href="#projects">Projects</a>
-      <a href="#resume">Resume</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <a class="wordmark" href="/">sambawa<span class="tld">.dev</span></a>
     <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme">
       <svg class="icon-sun" aria-hidden="true" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="12" cy="12" r="4"/>
@@ -51,199 +55,43 @@
     </button>
   </header>
 
-  <main id="top">
-
-    <section class="hero" aria-labelledby="hero-name">
-      <p class="hero-status">CS student · Cal Poly Pomona '29</p>
-      <h1 id="hero-name">Sam Bawa</h1>
-      <p class="hero-intro">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim
-        ad minim veniam quis nostrud exercitation.
-      </p>
-      <ul class="hero-links">
-        <li><a class="link-btn primary" href="assets/Sam%20Bawa%20Resume.pdf" download="Sam Bawa Resume.pdf">Resume<span class="arrow" aria-hidden="true"> ↓</span></a></li>
-        <li><a class="link-btn" href="https://github.com/samrathbawa" target="_blank" rel="noopener noreferrer">GitHub<span class="arrow" aria-hidden="true"> ↗</span></a></li>
-        <li><a class="link-btn" href="https://www.linkedin.com/in/sam-bawa/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="arrow" aria-hidden="true"> ↗</span></a></li>
-        <li><a class="link-btn" href="mailto:samrathbawa@outlook.com">Email</a></li>
-      </ul>
-      <ul class="stack" aria-label="Technical skills">
-        <li>C++</li><li>Java</li><li>Python</li><li>R</li><li>JavaScript</li><li>x86 Assembly</li><li>Git</li><li>CAN bus</li><li>Altium</li><li>SolidWorks</li>
-      </ul>
-    </section>
-
-    <section class="certs" id="certifications" aria-labelledby="certs-heading">
-      <h2 id="certs-heading">Certifications</h2>
-      <ul class="cert-grid">
-        <li class="cert-card">
-          <h3 class="cert-name"><a href="https://www.coursera.org/account/accomplishments/records/83KXJAZGQYKS" target="_blank" rel="noopener noreferrer">Supervised Machine Learning: Regression and Classification</a></h3>
-          <p class="cert-issuer">Stanford CPD, DeepLearning.AI, Coursera, UVM</p>
-        </li>
-        <li class="cert-card">
-          <h3 class="cert-name"><a href="https://www.coursera.org/account/accomplishments/records/LH78K3N42TT5" target="_blank" rel="noopener noreferrer">Unsupervised Learning, Recommenders, Reinforcement Learning</a></h3>
-          <p class="cert-issuer">Stanford CPD, DeepLearning.AI, Coursera, UVM</p>
-        </li>
-        <li class="cert-card">
-          <h3 class="cert-name"><a href="https://www.coursera.org/account/accomplishments/records/KDFBJ7DLZZNN" target="_blank" rel="noopener noreferrer">Advanced Learning Algorithms</a></h3>
-          <p class="cert-issuer">Stanford CPD, DeepLearning.AI, Coursera, UVM</p>
-        </li>
-        <li class="cert-card">
-          <h3 class="cert-name"><a href="https://verify.skilljar.com/c/8kb7ysbuvvz6" target="_blank" rel="noopener noreferrer">Claude 101</a></h3>
-          <p class="cert-issuer">Anthropic</p>
-        </li>
-      </ul>
-    </section>
-
-    <section class="projects" id="projects" aria-labelledby="projects-heading">
-      <h2 id="projects-heading">Projects</h2>
-      <ul id="project-grid" class="project-grid">
-        <li class="project-card" data-repo="ForzaFFB">
-          <div class="card-head">
-            <h3><a href="https://github.com/samrathbawa/ForzaFFB" target="_blank" rel="noopener noreferrer">ForzaFFB</a></h3>
-            <span class="card-meta mono" data-slot="meta"></span>
-          </div>
-          <p class="card-desc" data-slot="desc"></p>
-          <p class="card-foot mono"><span data-slot="updated"></span></p>
-        </li>
-        <li class="project-card" data-repo="macro">
-          <div class="card-head">
-            <h3><a href="https://github.com/samrathbawa/macro" target="_blank" rel="noopener noreferrer">macro</a></h3>
-            <span class="card-meta mono" data-slot="meta"></span>
-          </div>
-          <p class="card-desc" data-slot="desc"></p>
-          <p class="card-foot mono"><span data-slot="updated"></span></p>
-        </li>
-      </ul>
-      <noscript><p class="telemetry-note">Live stats need JavaScript, the links above still work.</p></noscript>
-
-      <div class="activity">
-        <div class="activity-inner">
-          <h3 class="activity-title mono" id="activity-heading"><a href="https://github.com/samrathbawa" target="_blank" rel="noopener noreferrer">contributions · last 12 months</a></h3>
-          <div class="calendar-scroll">
-            <div id="calendar" class="calendar" aria-hidden="true"></div>
-          </div>
-          <p id="activity-summary" class="activity-summary mono" aria-live="polite"></p>
-        </div>
-      </div>
-    </section>
-
-    <section class="resume" id="resume" aria-labelledby="resume-heading">
-      <div class="resume-head">
-        <h2 id="resume-heading">Resume</h2>
-        <a class="link-btn primary" href="assets/Sam%20Bawa%20Resume.pdf" download="Sam Bawa Resume.pdf">Download PDF<span class="arrow" aria-hidden="true"> ↓</span></a>
-      </div>
-
-      <div class="pdf-frame">
-      <article class="sheet" aria-label="Resume of Samrath Bawa">
-        <header class="sheet-header">
-          <p class="sheet-name">Samrath Bawa</p>
-          <p class="sheet-contact mono"><a href="mailto:samrathbawa@outlook.com">samrathbawa@outlook.com</a> · <a href="https://sambawa.dev">sambawa.dev</a> · <a href="https://github.com/samrathbawa" target="_blank" rel="noopener noreferrer">github.com/samrathbawa</a></p>
-        </header>
-
-        <section class="sheet-section" aria-labelledby="rs-skills">
-          <h3 id="rs-skills">Skills</h3>
-          <div class="skill-lines">
-            <p><strong>Programming:</strong> C++, Java, Python, R, JavaScript, HTML, CSS, x86 Assembly, Git, JUnit, REST APIs, pandas</p>
-            <p><strong>Embedded and Electrical:</strong> Teensy, ESP32, CAN bus, PlatformIO, Altium Designer, KiCad, Soldering, Lighting</p>
-            <p><strong>CAD and Analysis:</strong> SolidWorks, Fusion 360, Ansys Mechanical (FEA)</p>
-            <p><strong>Fabrication:</strong> 3D printing (machine upkeep, slicing), CO2 laser cutting and engraving, woodworking</p>
-            <p><strong>Game Engines:</strong> Godot, Defold, Panda3D</p>
-          </div>
-        </section>
-
-        <section class="sheet-section" aria-labelledby="rs-exp">
-          <h3 id="rs-exp">Experience</h3>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>AI Training Fellow</strong><span class="entry-when mono">July 2026 – Present</span></div>
-            <p class="entry-org">Handshake AI</p>
-            <ul>
-              <li>Writing hard questions about charts, tables, and images built to find where AI models break, tagged by the kind of reasoning they test</li>
-              <li>Writing money and tax questions that can only be answered by reading through five or more documents</li>
-              <li>Building grading rubrics that score AI answers point by point and writing up what each answer got wrong, which becomes training data</li>
-              <li>Rating and captioning AI generated video, images, and audio against a detailed style guide</li>
-            </ul>
-          </div>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>Software Captain</strong><span class="entry-when mono">2026 – Present</span></div>
-            <p class="entry-org">Bronco Electric Motorsports (Formula SAE Electric)</p>
-            <ul>
-              <li>Lead the software side of the electric race car and wrote the team's code, Git, and docs standards</li>
-              <li>Responsible for the car's CAN bus network, covering the dashboard, wheel display, and sensor board</li>
-              <li>Managed other members' code contributions and reviewed their pull requests to ensure they met the team's standards</li>
-              <li>Refactored the full firmware codebase of last year's car into modules to build the new car on</li>
-            </ul>
-          </div>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>Vice President</strong><span class="entry-when mono">August 2023 – June 2025</span></div>
-            <p class="entry-org">Woodbridge High School Web Development Club</p>
-            <ul>
-              <li>Taught members HTML, CSS, and JavaScript and built websites for clients such as other clubs and teachers</li>
-            </ul>
-          </div>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>Jr. Auxiliary Volunteer</strong><span class="entry-when mono">May 2024 – May 2025</span></div>
-            <p class="entry-org">Hoag Hospital</p>
-            <ul>
-              <li>Supported patients, visitors, and staff with wayfinding and wheelchair services</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="sheet-section" aria-labelledby="rs-proj">
-          <h3 id="rs-proj">Projects</h3>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>Race Car Dashboard and Steering Wheel Display</strong><span class="entry-when mono">Teensy, CAN bus, Altium</span></div>
-            <ul>
-              <li>Designed a sunlight readable CAN wheel display and a Teensy 4.1 dashboard schematic for the car</li>
-              <li>Moved the team's ESP32 sensor board from KiCad to Altium, verifying all 110 parts and 75 nets</li>
-            </ul>
-          </div>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>Accelerator Pedal Stress Analysis</strong><span class="entry-when mono">SolidWorks, Ansys</span></div>
-            <ul>
-              <li>Ran FEA on the pedal shock mounts, found the stock part too close to failing, and designed an aluminum pedal stop (safety factor 2.4)</li>
-              <li>Built a posable 95th percentile driver model in SolidWorks to check the car against the FSAE driver fit rules</li>
-            </ul>
-          </div>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>Game Telemetry to Hardware Bridge</strong><span class="entry-when mono">Windows, Device Drivers</span></div>
-            <ul>
-              <li>Turned live car data from a racing game into steering forces on a real steering wheel, using virtual device drivers</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="sheet-section" aria-labelledby="rs-edu">
-          <h3 id="rs-edu">Education</h3>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>California State Polytechnic University, Pomona</strong><span class="entry-when mono">2025 – 2029</span></div>
-            <p class="entry-org">Bachelor of Science in Computer Science, GPA 3.61, Dean's List</p>
-            <ul>
-              <li>Coursework: Data Structures, Computer Organization and Assembly, Systems Programming, C++, Discrete Structures, UI Design, Probability and Statistics</li>
-            </ul>
-          </div>
-          <div class="sheet-entry">
-            <div class="entry-line"><strong>Woodbridge High School</strong><span class="entry-when mono">2021 – 2025</span></div>
-            <p class="entry-org">High School Diploma</p>
-          </div>
-        </section>
-      </article>
-      </div>
-    </section>
-
+  <main class="holding">
+    <p class="hero-status">Under construction</p>
+    <h1>Sam Bawa</h1>
+    <p class="hero-intro">
+      I'm still building this site. Check back soon. Until then, you can
+      find me at the links below.
+    </p>
+    <ul class="hero-links">
+      <li><a class="link-btn primary" href="assets/Sam%20Bawa%20Resume.pdf" download="Sam Bawa Resume.pdf">Resume<span class="arrow" aria-hidden="true"> ↓</span></a></li>
+      <li><a class="link-btn" href="https://github.com/samrathbawa" target="_blank" rel="noopener noreferrer">GitHub<span class="arrow" aria-hidden="true"> ↗</span></a></li>
+      <li><a class="link-btn" href="https://www.linkedin.com/in/sam-bawa/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="arrow" aria-hidden="true"> ↗</span></a></li>
+      <li><a class="link-btn" href="mailto:samrathbawa@outlook.com">Email</a></li>
+    </ul>
   </main>
 
-  <footer class="site-footer" id="contact">
-    <h2>Contact</h2>
-    <a class="footer-mail" href="mailto:samrathbawa@outlook.com">samrathbawa@outlook.com</a>
-    <ul class="footer-links">
-      <li><a href="https://github.com/samrathbawa" target="_blank" rel="noopener noreferrer">GitHub<span class="arrow" aria-hidden="true"> ↗</span></a></li>
-      <li><a href="https://www.linkedin.com/in/sam-bawa/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="arrow" aria-hidden="true"> ↗</span></a></li>
-      <li><a href="assets/Sam%20Bawa%20Resume.pdf" download="Sam Bawa Resume.pdf">Resume PDF<span class="arrow" aria-hidden="true"> ↓</span></a></li>
-    </ul>
-    <p class="fineprint mono">© <span id="year">2026</span> Samrath Bawa · hosted on Cloudflare Pages</p>
-  </footer>
+  <script>
+    (function () {
+      var toggle = document.getElementById('theme-toggle');
+      function applyToggleLabel() {
+        var dark = document.documentElement.dataset.theme === 'dark';
+        toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      }
+      // Hidden door: 10 theme toggles within 5 s opens the uploads dashboard.
+      var toggleClicks = [];
+      toggle.addEventListener('click', function () {
+        var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch (e) {}
+        applyToggleLabel();
 
-  <script src="js/main.js"></script>
+        var now = Date.now();
+        toggleClicks = toggleClicks.filter(function (t) { return now - t < 5000; });
+        toggleClicks.push(now);
+        if (toggleClicks.length >= 10) location.href = '/dashboard/';
+      });
+      applyToggleLabel();
+    })();
+  </script>
 </body>
 </html>
