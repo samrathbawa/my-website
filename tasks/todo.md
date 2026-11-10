@@ -53,3 +53,11 @@ Worker (`src/worker.js`) in front of the static site + R2 bucket `sambawa-upload
 - [x] 2026-11-08: system24-site audited against vault UI/UX guide (research/2026-11-08-website-ui-ux-design-guide.md): AA contrast, landmarks + skip link + real headings, 16px body, 44px targets, light theme (system24 light flavor) following OS + toggle, removed single-key shortcuts, verb+object CTAs, sticky bar only on wide screens. Verified 320px reflow + both themes in headless Edge.
 - [x] 2026-11-08: system24-site is now the live homepage (public/index.html; resume links -> /resume). Dashboard + worker file/delete pages restyled on shared public/css/system24.css (old css/style.css + js/main.js now unused, kept for restoring design/portfolio-index.html). Hidden dashboard door kept on the theme toggle.
 - [x] design/system24-template/index.html: shareable copy with all personal info replaced by placeholders (CONFIG.user empty skips GitHub fetches)
+
+## 2026-11-09: holding page
+- [x] Stop-slop pass on homepage + dashboard copy
+- [x] Saved full system24 portfolio (with copy edits) to design/system24-site/index.html
+- [x] public/index.html now a system24 "still building this site" page (resume, GitHub, LinkedIn, email; theme toggle hidden door kept)
+- To restore: copy design/system24-site/index.html to public/index.html and change https://sambawa.dev/resume links back to /resume
+- [x] Holding page copy: "You can contact me below."; status-bar words removed
+- [x] Buttons: wide-gap double frame + filled resume (B+C from design/double-frame-options.html), reviewed twice by ui-ux-reviewer; light accent-1 darkened to 46% for hover contrast; top bar padding 0.75rem

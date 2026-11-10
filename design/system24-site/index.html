@@ -464,9 +464,9 @@
 ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚═════╝ ╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝  ╚═╝</pre>
         <h1 class="sr-only" id="name">Samrath Bawa</h1>
         <p class="intro">
-          I write firmware for an electric race car. As software captain on Bronco Electric Motorsports,
-          our Formula SAE Electric student team, I lead 7 developers, write the car's C++ for Teensy 4.1
-          and ESP32, and run its CAN bus network. I also build sim-racing tools.
+          I write firmware for an electric race car. I'm software captain on Bronco Electric Motorsports,
+          our Formula SAE Electric student team, where I lead 7 developers and own the CAN bus network
+          that ties the car's Teensy 4.1 and ESP32 boards together. On the side I build sim-racing tools.
         </p>
         <div class="buttons">
           <a class="btn primary" href="https://sambawa.dev/resume" target="_blank" rel="noopener noreferrer">Download resume (PDF) ↓</a>
@@ -567,7 +567,7 @@
       <section class="panel span-2" id="resume" aria-labelledby="resume-h">
         <h2 class="label" id="resume-h">resume</h2>
         <div class="resume-head">
-          <p>Experience and education at a glance. The PDF has everything on one page.</p>
+          <p>Highlights below. The one-page PDF has the rest.</p>
           <a class="btn primary" href="https://sambawa.dev/resume" target="_blank" rel="noopener noreferrer">Download resume (PDF) ↓</a>
         </div>
         <div class="resume-cols">
@@ -579,7 +579,7 @@
                 <li>Lead a software team of 7 on the electric race car and set its code, Git, and documentation standards</li>
                 <li>Develop the car's firmware in C++ for Teensy 4.1 and ESP32 microcontrollers using PlatformIO, and own the CAN bus network linking the dashboard, wheel display, and sensor board</li>
                 <li>Review team members' pull requests to enforce the team's code standards</li>
-                <li>Refactored last year's full firmware codebase into modules that the new car is built on</li>
+                <li>Refactored last year's full firmware codebase into modules the new car runs on</li>
               </ul>
             </article>
             <article class="card">
@@ -587,9 +587,9 @@
               <div class="card-top"><span class="card-kicker">Handshake AI · remote</span><span class="when">Jul 2026 – present</span></div>
               <ul>
                 <li>Design hard questions about charts, tables, and images to find where AI models break, tagging each by the kind of reasoning it tests</li>
-                <li>Author money and tax questions that can only be answered by reading through five or more documents</li>
+                <li>Author money and tax questions that take five or more documents to answer</li>
                 <li>Build grading rubrics that score AI answers point by point, and document what each answer got wrong as training data</li>
-                <li>Rate and caption AI generated video, images, and audio against a detailed style guide</li>
+                <li>Rate and caption AI generated video, images, and audio against the project's style guide</li>
               </ul>
             </article>
           </div>
@@ -603,12 +603,12 @@
             <article class="card">
               <h3 class="card-title">Vice President</h3>
               <div class="card-top"><span class="card-kicker">Woodbridge HS Web Dev Club</span><span class="when">2023 – 2025</span></div>
-              <p class="card-desc">Taught members HTML, CSS, and JavaScript and built websites for clients such as other clubs and teachers.</p>
+              <p class="card-desc">Taught members HTML, CSS, and JavaScript and built websites for other clubs and teachers.</p>
             </article>
             <article class="card">
               <h3 class="card-title">Jr. Auxiliary Volunteer</h3>
               <div class="card-top"><span class="card-kicker">Hoag Hospital</span><span class="when">2024 – 2025</span></div>
-              <p class="card-desc">Supported patients, visitors, and staff with wayfinding and wheelchair services.</p>
+              <p class="card-desc">Helped patients and visitors find their way around the hospital and pushed wheelchairs.</p>
             </article>
           </div>
         </div>
@@ -823,7 +823,7 @@
           .catch(function () {
             if (cached) { renderCalendar(cached.data); return; }
             calendar.parentElement.hidden = true;
-            summary.innerHTML = 'The contribution calendar is unavailable right now. See ' + profile + '.';
+            summary.innerHTML = 'Couldn\'t load the contribution calendar. See ' + profile + '.';
           });
       }
 

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Double frame buttons</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Variations on the double-frame button (option 4 in button-options.html), both themes.
+       Tokens copied from public/index.html. Hover and click each one to compare. */
+    .dark {
+      --text-1: oklch(95% 0 0); --text-2: oklch(85% 0 0); --text-3: oklch(75% 0 0); --text-4: oklch(64% 0 0);
+      --bg-1: oklch(31% 0 0); --bg-2: oklch(27% 0 0); --bg-3: oklch(23% 0 0); --bg-4: oklch(19% 0 0);
+      --hover: oklch(54% 0 0 / 0.1); --active: oklch(54% 0 0 / 0.2);
+      --accent-1: oklch(75% 0.11 215); --accent-2: oklch(70% 0.11 215); --accent-3: oklch(65% 0.11 215); --accent-4: oklch(60% 0.11 215);
+      --on-accent: var(--bg-4);
+    }
+    .light {
+      --text-1: oklch(20% 0 0); --text-2: oklch(25% 0 0); --text-3: oklch(30% 0 0); --text-4: oklch(48% 0 0);
+      --bg-1: oklch(82% 0 0); --bg-2: oklch(86% 0 0); --bg-3: oklch(90% 0 0); --bg-4: oklch(94% 0 0);
+      --hover: oklch(50% 0 0 / 0.1); --active: oklch(50% 0 0 / 0.2);
+      --accent-1: oklch(48% 0.11 215); --accent-2: oklch(55% 0.11 215); --accent-3: oklch(70% 0.11 215); --accent-4: oklch(65% 0.11 215);
+      --on-accent: oklch(20% 0 0);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'DM Mono', ui-monospace, Consolas, monospace; font-weight: 300; letter-spacing: -0.05ch; background: oklch(19% 0 0); }
+    .themes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 34rem), 1fr)); }
+    .theme { background: var(--bg-4); color: var(--text-3); padding: 1.5rem 16px; display: grid; gap: 30px; align-content: start; }
+    .theme > h1 { margin: 0; font-size: 1.25rem; font-weight: 500; color: var(--text-1); }
+    a { text-decoration: none; }
+
+    .panel { position: relative; padding: 1.5rem 1.25rem 1.25rem; border: 2px solid var(--active); transition: border-color 0.2s ease; }
+    .panel:hover { border-color: var(--accent-2); }
+    .label { position: absolute; top: -0.7rem; left: 8px; padding: 0 4px; background: var(--bg-4); color: var(--text-4); font-weight: 500; line-height: 1.2rem; }
+    .panel:hover > .label { color: var(--accent-1); }
+    .note { margin: 0 0 1rem; font-size: 0.8125rem; color: var(--text-4); line-height: 1.5; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    /* shared base */
+    .b {
+      position: relative; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 2ch;
+      font: inherit; font-size: 0.9375rem; letter-spacing: inherit; color: var(--text-2);
+      background: transparent; border: 0; cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.2s ease, outline-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .b:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+    .b.p { font-weight: 500; }
+    /* every variant: pressing swaps to reverse video */
+    .b:active { background: var(--text-2) !important; color: var(--bg-4) !important; }
+
+    /* A. original double frame */
+    .vA .b { border: 4px double var(--text-4); }
+    .vA .b:hover { border-color: var(--accent-2); color: var(--accent-1); }
+    .vA .b.p { border-color: var(--accent-2); color: var(--accent-1); }
+    .vA .b.p:hover { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); }
+
+    /* B. filled primary: resume is a solid block inside a double frame */
+    .vB .b { border: 4px double var(--text-4); }
+    .vB .b:hover { border-color: var(--accent-2); color: var(--accent-1); }
+    .vB .b.p { border-color: var(--accent-3); color: var(--on-accent); background: var(--accent-3); background-clip: padding-box; box-shadow: 0 0 0 0 transparent; }
+    .vB .b.p { border-style: solid; border-width: 1px; outline: 1px solid var(--accent-3); outline-offset: 2px; }
+    .vB .b.p:hover { background-color: var(--accent-4); border-color: var(--accent-4); outline-color: var(--accent-4); }
+
+    /* C. wide gap: two thin lines with more air between them */
+    .vC .b { border: 1px solid var(--text-4); outline: 1px solid var(--text-4); outline-offset: 3px; margin: 4px; }
+    .vC .b:hover { border-color: var(--accent-2); outline-color: var(--accent-2); color: var(--accent-1); }
+    .vC .b.p { border-color: var(--accent-2); outline-color: var(--accent-2); color: var(--accent-1); }
+    .vC .b.p:hover { background: var(--accent-3); color: var(--on-accent); }
+
+    /* D. heavy outer, light inner (like ┏━┓ around ┌─┐) */
+    .vD .b { border: 3px solid var(--text-4); box-shadow: inset 0 0 0 2px var(--bg-4), inset 0 0 0 3px var(--text-4); }
+    .vD .b:hover { border-color: var(--accent-2); color: var(--accent-1); box-shadow: inset 0 0 0 2px var(--bg-4), inset 0 0 0 3px var(--accent-2); }
+    .vD .b.p { border-color: var(--accent-2); color: var(--accent-1); box-shadow: inset 0 0 0 2px var(--bg-4), inset 0 0 0 3px var(--accent-2); }
+    .vD .b.p:hover { background: var(--accent-3); color: var(--on-accent); }
+
+    /* E. single line that doubles on hover */
+    .vE .b { border: 1px solid var(--text-4); outline: 1px solid transparent; outline-offset: 2px; }
+    .vE .b:hover { border-color: var(--accent-2); outline-color: var(--accent-2); color: var(--accent-1); }
+    .vE .b.p { border-color: var(--accent-2); outline-color: var(--accent-2); color: var(--accent-1); }
+    .vE .b.p:hover { background: var(--accent-3); color: var(--on-accent); }
+
+    /* F. double frame with a tag cut into the top border, like the panel labels */
+    .vF .row { gap: 18px 10px; padding-top: 6px; }
+    .vF .b { border: 4px double var(--text-4); }
+    .vF .b::before { content: attr(data-tag); position: absolute; top: -0.7em; left: 6px; padding: 0 3px; background: var(--bg-4); color: var(--text-4); font-size: 0.6875rem; line-height: 1.2; font-weight: 400; }
+    .vF .b:hover { border-color: var(--accent-2); color: var(--accent-1); }
+    .vF .b:hover::before { color: var(--accent-1); }
+    .vF .b.p { border-color: var(--accent-2); color: var(--accent-1); }
+    .vF .b.p::before { color: var(--accent-1); }
+    .vF .b.p:hover { background: var(--accent-3); color: var(--on-accent); }
+
+    /* G. double top and bottom only (══ rails), single sides */
+    .vG .b { border-style: double solid; border-width: 4px 1px; border-color: var(--text-4); }
+    .vG .b:hover { border-color: var(--accent-2); color: var(--accent-1); }
+    .vG .b.p { border-color: var(--accent-2); color: var(--accent-1); }
+    .vG .b.p:hover { background: var(--accent-3); color: var(--on-accent); }
+
+    /* H. double frame + brackets inside */
+    .vH .b { border: 4px double var(--text-4); padding: 0 1ch; white-space: pre; }
+    .vH .b::before { content: "[ "; content: "[ " / ""; color: var(--text-4); }
+    .vH .b::after { content: " ]"; content: " ]" / ""; color: var(--text-4); }
+    .vH .b:hover { border-color: var(--accent-2); color: var(--accent-1); }
+    .vH .b:hover::before, .vH .b:hover::after { color: var(--accent-2); }
+    .vH .b.p { border-color: var(--accent-2); color: var(--accent-1); }
+    .vH .b.p::before, .vH .b.p::after { color: var(--accent-2); }
+    .vH .b.p:hover { background: var(--accent-3); color: var(--on-accent); }
+    .vH .b.p:hover::before, .vH .b.p:hover::after { color: inherit; }
+
+    /* I. double frame, hover fills everything with reverse video */
+    .vI .b { border: 4px double var(--text-4); }
+    .vI .b:hover { background: var(--text-2); border-color: var(--text-2); color: var(--bg-4); }
+    .vI .b.p { border-color: var(--accent-2); color: var(--accent-1); }
+    .vI .b.p:hover { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); }
+
+    /* J. thick double (6px) for a chunkier, more ASCII-art frame */
+    .vJ .b { border: 6px double var(--text-4); padding: 0 2.5ch; }
+    .vJ .b:hover { border-color: var(--accent-2); color: var(--accent-1); }
+    .vJ .b.p { border-color: var(--accent-2); color: var(--accent-1); }
+    .vJ .b.p:hover { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); }
+  </style>
+</head>
+<body>
+  <div class="themes">
+    <section class="theme dark"><h1>dark</h1></section>
+    <section class="theme light"><h1>light</h1></section>
+  </div>
+
+  <template id="variants">
+    <div class="panel vA"><span class="label">A · original</span>
+      <p class="note">Option 4 as you saw it. Resume stands out by color, fills blue on hover.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel vB"><span class="label">B · filled resume</span>
+      <p class="note">Resume is a solid blue block with a second line around it; the rest stay double frames.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel vC"><span class="label">C · wide gap</span>
+      <p class="note">Two thin lines with more space between them. Lighter and airier.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel vD"><span class="label">D · heavy + light</span>
+      <p class="note">Thick outer line, thin inner line. Bolder, like heavy box-drawing characters.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel vE"><span class="label">E · doubles on hover</span>
+      <p class="note">Single line at rest; a second line appears on hover. Resume is always doubled.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel vF"><span class="label">F · tagged</span>
+      <p class="note">A small tag cut into the top border, matching how your panels are labeled.</p>
+      <div class="row"><a class="b p" href="#" data-tag="pdf">resume ↓</a><a class="b" href="#" data-tag="code">github ↗</a><a class="b" href="#" data-tag="work">linkedin ↗</a><a class="b" href="#" data-tag="mail">email</a></div></div>
+
+    <div class="panel vG"><span class="label">G · rails</span>
+      <p class="note">Double lines on top and bottom only, single on the sides.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel vH"><span class="label">H · frame + brackets</span>
+      <p class="note">Double frame with the bracketed label inside.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel vI"><span class="label">I · reverse on hover</span>
+      <p class="note">Same frame, but hover fills the whole button with inverted colors instead of turning blue.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel vJ"><span class="label">J · chunky</span>
+      <p class="note">Thicker double lines and wider padding, closer to an ASCII-art frame.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+  </template>
+
+  <script>
+    var tpl = document.getElementById('variants');
+    document.querySelectorAll('.theme').forEach(function (t) { t.appendChild(tpl.content.cloneNode(true)); });
+    document.addEventListener('click', function (e) { if (e.target.closest('a.b')) e.preventDefault(); });
+  </script>
+</body>
+</html>

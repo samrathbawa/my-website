@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Side-by-side button options for the sambawa.dev holding page, in both themes.
+       Tokens copied from public/index.html. Hover and click each one to compare. */
+    .dark {
+      --text-1: oklch(95% 0 0); --text-2: oklch(85% 0 0); --text-3: oklch(75% 0 0); --text-4: oklch(64% 0 0);
+      --bg-1: oklch(31% 0 0); --bg-2: oklch(27% 0 0); --bg-3: oklch(23% 0 0); --bg-4: oklch(19% 0 0);
+      --hover: oklch(54% 0 0 / 0.1); --active: oklch(54% 0 0 / 0.2);
+      --accent-1: oklch(75% 0.11 215); --accent-2: oklch(70% 0.11 215); --accent-3: oklch(65% 0.11 215); --accent-4: oklch(60% 0.11 215);
+      --on-accent: var(--bg-4);
+      --button-border: hsl(220, 0%, 100%, 0.12);
+    }
+    .light {
+      --text-1: oklch(20% 0 0); --text-2: oklch(25% 0 0); --text-3: oklch(30% 0 0); --text-4: oklch(48% 0 0);
+      --bg-1: oklch(82% 0 0); --bg-2: oklch(86% 0 0); --bg-3: oklch(90% 0 0); --bg-4: oklch(94% 0 0);
+      --hover: oklch(50% 0 0 / 0.1); --active: oklch(50% 0 0 / 0.2);
+      --accent-1: oklch(48% 0.11 215); --accent-2: oklch(55% 0.11 215); --accent-3: oklch(70% 0.11 215); --accent-4: oklch(65% 0.11 215);
+      --on-accent: oklch(20% 0 0);
+      --button-border: hsl(220, 0%, 0%, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'DM Mono', ui-monospace, Consolas, monospace; font-weight: 300; letter-spacing: -0.05ch; background: oklch(19% 0 0); }
+    .themes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 34rem), 1fr)); }
+    .theme { background: var(--bg-4); color: var(--text-3); padding: 1.5rem 16px; display: grid; gap: 30px; align-content: start; }
+    .theme > h1 { margin: 0; font-size: 1rem; font-weight: 500; color: var(--text-2); }
+    a { text-decoration: none; }
+
+    .panel { position: relative; padding: 1.5rem 1.25rem 1.25rem; border: 2px solid var(--active); transition: border-color 0.2s ease; }
+    .panel:hover { border-color: var(--accent-2); }
+    .label { position: absolute; top: -0.7rem; left: 8px; padding: 0 4px; background: var(--bg-4); color: var(--text-4); font-weight: 500; line-height: 1.2rem; }
+    .panel:hover > .label { color: var(--accent-1); }
+    .note { margin: 0 0 1rem; font-size: 0.875rem; color: var(--text-4); line-height: 1.5; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* shared base */
+    .b {
+      display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 2ch;
+      font: inherit; font-size: 0.9375rem; letter-spacing: inherit; color: var(--text-2);
+      background: transparent; border: 0; cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.2s ease;
+    }
+    .b:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+
+    /* 1. outline (live now) */
+    .o1 .b { border: 1px solid var(--text-4); }
+    .o1 .b:hover { border-color: var(--accent-2); color: var(--accent-1); background: var(--hover); }
+    .o1 .b.p { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); font-weight: 500; }
+    .o1 .b.p:hover { background: var(--accent-4); border-color: var(--accent-4); }
+    .o1 .b:active { background: var(--text-2); border-color: var(--text-2); color: var(--bg-4); }
+
+    /* 2. solid reverse-video blocks */
+    .o2 .b { background: var(--text-2); color: var(--bg-4); font-weight: 400; }
+    .o2 .b:hover { background: var(--text-1); }
+    .o2 .b.p { background: var(--accent-3); color: var(--on-accent); font-weight: 500; }
+    .o2 .b.p:hover { background: var(--accent-4); }
+    .o2 .b:active { background: transparent; color: var(--text-2); box-shadow: inset 0 0 0 1px var(--text-2); }
+
+    /* 3. one-line cell band (WebTUI default: fill covers only the middle text row) */
+    .o3 .b { min-height: 3lh; line-height: 1.6;
+      background-image: linear-gradient(to bottom, transparent 0.85lh, var(--bg-1) 0.85lh, var(--bg-1) calc(100% - 0.85lh), transparent calc(100% - 0.85lh)); }
+    .o3 .b:hover { background-image: linear-gradient(to bottom, transparent 0.85lh, var(--text-2) 0.85lh, var(--text-2) calc(100% - 0.85lh), transparent calc(100% - 0.85lh)); color: var(--bg-4); }
+    .o3 .b.p { color: var(--on-accent); font-weight: 500;
+      background-image: linear-gradient(to bottom, transparent 0.85lh, var(--accent-3) 0.85lh, var(--accent-3) calc(100% - 0.85lh), transparent calc(100% - 0.85lh)); }
+    .o3 .b.p:hover { background-image: linear-gradient(to bottom, transparent 0.85lh, var(--accent-4) 0.85lh, var(--accent-4) calc(100% - 0.85lh), transparent calc(100% - 0.85lh)); }
+
+    /* 4. double-line box (like ═══ box-drawing frames) */
+    .o4 .b { border: 4px double var(--text-4); }
+    .o4 .b:hover { border-color: var(--accent-2); color: var(--accent-1); }
+    .o4 .b.p { border-color: var(--accent-2); color: var(--accent-1); font-weight: 500; }
+    .o4 .b.p:hover { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); }
+    .o4 .b:active { background: var(--text-2); border-color: var(--text-2); color: var(--bg-4); }
+
+    /* 5. system24 flat (the theme's own buttons: filled, thin border, square) */
+    .o5 .b { background: var(--bg-2); border: 1px solid var(--button-border); color: var(--text-2); font-weight: 400; }
+    .o5 .b:hover { background: var(--bg-1); }
+    .o5 .b.p { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); font-weight: 500; }
+    .o5 .b.p:hover { background: var(--accent-4); }
+    .o5 .b:active { background: var(--active); }
+
+    /* 6. brackets + underlined label, reverse video on hover */
+    .o6 .b { padding: 0 4px; white-space: pre; }
+    .o6 .b::before { content: "[ "; content: "[ " / ""; color: var(--text-4); }
+    .o6 .b::after { content: " ]"; content: " ]" / ""; color: var(--text-4); }
+    .o6 .b span { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--text-4); }
+    .o6 .b.p { color: var(--accent-1); font-weight: 500; }
+    .o6 .b.p span { text-decoration-color: var(--accent-2); }
+    .o6 .b:hover { background: var(--text-2); color: var(--bg-4); }
+    .o6 .b.p:hover { background: var(--accent-3); color: var(--on-accent); }
+    .o6 .b:hover::before, .o6 .b:hover::after, .o6 .b:hover span { color: inherit; text-decoration-color: currentColor; }
+
+    /* 7. command prompt lines */
+    .o7 .row { flex-direction: column; gap: 2px; }
+    .o7 .b { min-height: 2.5rem; padding: 0 1ch; justify-content: flex-start; width: fit-content; border-left: 2px solid transparent; }
+    .o7 .b::before { content: "$"; content: "$" / ""; margin-right: 1ch; color: var(--text-4); }
+    .o7 .b .cmd { margin-right: 1ch; color: var(--text-4); }
+    .o7 .b.p { color: var(--accent-1); font-weight: 500; }
+    .o7 .b:hover { background: var(--hover); border-left-color: var(--accent-2); color: var(--accent-1); }
+    .o7 .b:hover::after { content: "  ⏎"; content: "  ⏎" / ""; color: var(--accent-1); }
+  </style>
+</head>
+<body>
+  <div class="themes">
+    <section class="theme dark">
+      <h1>dark</h1>
+      <!-- options injected by script -->
+    </section>
+    <section class="theme light">
+      <h1>light</h1>
+    </section>
+  </div>
+
+  <template id="options">
+    <div class="panel o1"><span class="label">1 · outline (live now)</span>
+      <p class="note">Square 1px frame like the panels; border turns blue on hover. WebTUI box / terminal.css ghost.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel o2"><span class="label">2 · solid blocks</span>
+      <p class="note">Reverse-video blocks: light fill, dark text. WebTUI's default button color, terminal.css default.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel o3"><span class="label">3 · cell band</span>
+      <p class="note">Fill covers one text row only, like a highlighted line in a TUI. WebTUI's default sizing.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel o4"><span class="label">4 · double frame</span>
+      <p class="note">Double-line border, like the double box lines in terminal apps. Resume stands out by color; fills on hover.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel o5"><span class="label">5 · system24 flat</span>
+      <p class="note">The theme's own buttons: gray fill, faint border, square. Closest to the Discord theme you started from.</p>
+      <div class="row"><a class="b p" href="#">resume.pdf ↓</a><a class="b" href="#">github ↗</a><a class="b" href="#">linkedin ↗</a><a class="b" href="#">email</a></div></div>
+
+    <div class="panel o6"><span class="label">6 · brackets + underline</span>
+      <p class="note">The bracket version from before, with an underline so it reads as clickable. Reverse video on hover.</p>
+      <div class="row"><a class="b p" href="#"><span>resume.pdf ↓</span></a><a class="b" href="#"><span>github ↗</span></a><a class="b" href="#"><span>linkedin ↗</span></a><a class="b" href="#"><span>email</span></a></div></div>
+
+    <div class="panel o7"><span class="label">7 · command lines</span>
+      <p class="note">Each link is a shell command; hover highlights the line and shows ⏎. Most "terminal", least button-like.</p>
+      <div class="row"><a class="b p" href="#"><span class="cmd">open</span>resume.pdf</a><a class="b" href="#"><span class="cmd">open</span>github</a><a class="b" href="#"><span class="cmd">open</span>linkedin</a><a class="b" href="#"><span class="cmd">mail</span>sam</a></div></div>
+  </template>
+
+  <script>
+    var tpl = document.getElementById('options');
+    document.querySelectorAll('.theme').forEach(function (t) { t.appendChild(tpl.content.cloneNode(true)); });
+    document.addEventListener('click', function (e) { if (e.target.closest('a.b')) e.preventDefault(); });
+  </script>
+</body>
+</html>
