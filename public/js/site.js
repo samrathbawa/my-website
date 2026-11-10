@@ -423,14 +423,14 @@ const RENDER = {
     const user = site.page.github;
     if (b.style === 'compact') {
       return `${head}<ul class="cards compact">${b.cards.map((c) => `<li class="card">
-          <h3 class="card-title">${c.href ? `<a ${linkAttrs(c.href)}>${esc(c.title)}</a>` : esc(c.title)}</h3>
+          <h3 class="card-title">${c.href ? `<a ${linkAttrs(c.href)}>${esc(c.title)}</a>` : `<span>${esc(c.title)}</span>`}</h3>
           ${c.kicker ? `<div class="card-kicker">${esc(c.kicker)}</div>` : ''}
           ${rich(c.text, 'card-desc rich')}
         </li>`).join('')}</ul>`;
     }
     return `${head}<div class="cards">${b.cards.map((c) => {
       const href = c.href || (c.repo && user ? `https://github.com/${encodeURIComponent(user)}/${encodeURIComponent(c.repo)}` : '');
-      const title = href ? `<a ${linkAttrs(href)}>${esc(c.title || c.repo)}</a>` : esc(c.title);
+      const title = href ? `<a ${linkAttrs(href)}>${esc(c.title || c.repo)}</a>` : `<span>${esc(c.title)}</span>`;
       const when = c.repo ? `<span class="when" data-slot="updated">${esc(c.when)}</span>` : (c.when ? `<span class="when">${esc(c.when)}</span>` : '');
       const top = c.kicker || when ? `<div class="card-top"><span class="card-kicker">${esc(c.kicker)}</span>${when}</div>` : '';
       const desc = c.repo

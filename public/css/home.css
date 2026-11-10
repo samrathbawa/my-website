@@ -290,41 +290,34 @@ h1, h2, h3, p { margin: 0; font-size: inherit; }
 
 /* cards (inner boxes) */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); gap: var(--gap); }
-/* The top edge is drawn by the title row (line, title, line), so long titles can wrap
-   while the first line stays on the border. */
+/* The top edge is a real border, so it survives any zoom or scaling. The title sits on it and
+   its text gets the page background to cut the line, like the panel labels; long titles wrap
+   and only their first line sits on the border. */
 .card {
   margin-top: 0.75rem;
   padding: 0 1rem 1rem;
   border: 1px solid var(--border);
-  border-top: 0;
   transition: border-color var(--border-hover-transition);
 }
 .card:hover, .card:focus-within { border-color: var(--border-hover); }
 .card-title {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  margin: -0.7em -1rem 0.375rem;
+  margin: -0.7em 0 0.375rem;
   color: var(--text-1);
   font-size: 1.0625rem;
   font-weight: 500;
   line-height: 1.4;
 }
-.card-title::before,
-.card-title::after {
-  content: "";
-  height: 1px;
-  margin-top: 0.7em;
-  background: var(--border);
-  transition: background var(--border-hover-transition);
+.card-title > a,
+.card-title > span {
+  margin-left: -6px;
+  padding: 0 6px;
+  background: var(--bg-4);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
-.card-title::before { flex: 0 0 10px; }
-.card-title::after { flex: 1 1 0; min-width: 12px; }
-.card:hover > .card-title::before, .card:hover > .card-title::after,
-.card:focus-within > .card-title::before, .card:focus-within > .card-title::after { background: var(--border-hover); }
 .card-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; align-items: baseline; }
 .card-kicker { color: var(--text-4); font-size: 0.8125rem; }
-.card-title a { min-width: 0; color: var(--text-1); }
+.card-title a { color: var(--text-1); }
 .card-title a::after { content: " ↗"; color: var(--text-4); }
 .card-title a:hover { color: var(--accent-1); }
 .card-desc { margin-top: 6px; color: var(--text-3); font-size: 0.9375rem; max-width: 70ch; }
