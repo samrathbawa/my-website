@@ -3,7 +3,7 @@
 Personal site + private file host on Cloudflare: Worker `my-website` (custom domain sambawa.dev) serving `public/`, R2 bucket `sambawa-uploads`, secret `UPLOAD_KEY`. Pushes to `main` auto-deploy.
 
 ## Resume here
-- Next step: M4 — Sam tries the site tab on sambawa.dev/dashboard (edit, save, flip the toggle).
+- Next step: M5 — Sam keeps editing the live homepage in the site tab; report layout bugs.
 
 ## Roadmap
 
@@ -56,11 +56,12 @@ Homepage content is blocks in R2 (`config/site.json`); the Worker renders `/` fr
 - [x] Dashboard "site" tab: mode toggle, page settings, add/reorder/drag/duplicate/hide/delete blocks, edit text + links, live preview (desktop/phone), click a box in the preview to edit it
 - [x] Verified with wrangler dev + headless Edge: API auth (401), bad mode (400), save keeps mode, both modes on `/`, editor edit/add/move/hide/save, link warning, phone width (no overflow), no console errors
 - [x] 2026-11-10: Pushed (ce17739), deployed; verified live: editor files 200, `/` still the building page, /api/site 401 without key
-- [ ] Sam tests the site tab on sambawa.dev/dashboard
+- [x] Sam tested the site tab on sambawa.dev/dashboard
+- [x] 2026-11-10: Card top edges vanished in the scaled preview / after wrapped titles: now a real border cut by the title's background (052c143)
 
 ### M5 Homepage live
 - [ ] Sam edits the homepage content in the site tab until happy
-- [ ] Sam flips the toggle to Homepage
+- [x] 2026-11-10: Sam flipped the toggle to Homepage (live)
 - [ ] Sam confirms final repo list (repo cards: set "GitHub repo name" on a card)
 
 ### M6 Cleanup

@@ -1,7 +1,6 @@
 # Waiting on Sam
 
-- Homepage editor is live. Open sambawa.dev/dashboard → **4:site**. The draft starts as the full system24 portfolio. Edit it and save. Visitors still see the still building page.
-- When you're happy with it, click **Homepage** at the top of the site tab to put it live. Click **Still building page** to take it back down.
+- The homepage is live. Keep editing it in sambawa.dev/dashboard → **4:site**. Click **Still building page** there to take it down.
 - Optional: in Cloudflare → Notifications, add a billing or usage alert. On the Billing page, check that Workers says Free.
 - ShareX: download the `.sxcu` from the dashboard's sharex tab and double-click it to import.
 - Delete the old Pages project `my-site`. It doesn't serve the domain any more, but it still builds on every push.
