@@ -21,6 +21,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/system24.css">
   <link rel="stylesheet" href="/dashboard/uploads.css">
+  <link rel="stylesheet" href="/dashboard/site-editor.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231b1b1b'/%3E%3Ctext x='50' y='66' font-size='44' text-anchor='middle' font-family='monospace' fill='%2378c4d8'%3ESB%3C/text%3E%3C/svg%3E">
 </head>
 <body>
@@ -34,6 +35,7 @@
       <a href="#files" data-tab="files"><span class="n" aria-hidden="true">1:</span>files</a>
       <a href="#embed" data-tab="embed"><span class="n" aria-hidden="true">2:</span>embed</a>
       <a href="#sharex" data-tab="sharex"><span class="n" aria-hidden="true">3:</span>sharex</a>
+      <a href="#site" data-tab="site"><span class="n" aria-hidden="true">4:</span>site</a>
     </nav>
     <button id="lock" class="text-btn" type="button" hidden>lock</button>
   </header>
@@ -151,6 +153,61 @@
       <p class="hint muted">Deletion links from ShareX’s history open a confirm page here.</p>
     </section>
 
+    <!-- Site (homepage editor) -->
+    <section id="site" class="dash-panel panel" hidden>
+      <h1 class="label">site</h1>
+
+      <div class="site-bar">
+        <div class="mode-switch" role="group" aria-labelledby="mode-h">
+          <span id="mode-h" class="mode-title">sambawa.dev shows</span>
+          <button type="button" class="link-btn small" data-mode="home" aria-pressed="false">Homepage</button>
+          <button type="button" class="link-btn small" data-mode="building" aria-pressed="false">Still building page</button>
+        </div>
+        <div class="save-group">
+          <span id="site-status" class="muted" role="status"></span>
+          <button id="site-discard" class="link-btn small" type="button" disabled>Discard changes</button>
+          <button id="site-save" class="link-btn primary" type="button" disabled>Save homepage</button>
+        </div>
+      </div>
+      <p id="mode-note" class="hint muted"></p>
+
+      <div class="site-layout">
+        <div class="site-editor">
+          <details class="page-settings">
+            <summary>Page settings <span class="muted">(tab title, description, name)</span></summary>
+            <div id="page-fields" class="stack-form"></div>
+          </details>
+
+          <ol id="blocks" class="blocks" aria-label="Homepage blocks, top to bottom"></ol>
+
+          <div class="add-block">
+            <label for="add-type">Add a block</label>
+            <div class="add-row">
+              <select id="add-type"></select>
+              <button id="add-block" class="link-btn" type="button">Add</button>
+            </div>
+            <p id="add-desc" class="hint muted"></p>
+          </div>
+
+          <p class="hint muted"><button id="site-reset" class="text-link" type="button">Start over from the original portfolio</button> (replaces the draft; nothing changes live until you save)</p>
+        </div>
+
+        <div class="site-preview">
+          <div class="preview-bar">
+            <span class="muted">preview (unsaved changes included)</span>
+            <div class="preview-size" role="group" aria-label="Preview width">
+              <button type="button" class="link-btn small" data-size="desktop" aria-pressed="true">Desktop</button>
+              <button type="button" class="link-btn small" data-size="phone" aria-pressed="false">Phone</button>
+            </div>
+          </div>
+          <div id="preview-box" class="preview-box">
+            <iframe id="preview" title="Homepage preview"></iframe>
+          </div>
+          <p class="hint muted">Click a box in the preview to edit it.</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   </div>
@@ -158,5 +215,6 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="/dashboard/dashboard.js"></script>
+  <script type="module" src="/dashboard/site-editor.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 /* sambawa.dev uploads dashboard: files, embed settings, ShareX config.
-   Talks to the worker's /api/*; the upload key lives in this browser's localStorage. */
+   Talks to the worker's /api/*; the upload key lives in this browser's localStorage.
+   The site tab is site-editor.js; it gets api + toast through the dashboard:unlocked event. */
 
 (function () {
   'use strict';
@@ -59,6 +60,8 @@
       $('lock').hidden = false;
       fillSettingsForm();
       showTab();
+      window.dashboard = { api: api, toast: toast };
+      document.dispatchEvent(new CustomEvent('dashboard:unlocked', { detail: window.dashboard }));
       return loadFiles();
     }).catch(function (err) {
       key = null;
@@ -83,12 +86,13 @@
 
   /* ---------- tabs ---------- */
 
-  var PANELS = ['files', 'embed', 'sharex'];
+  var PANELS = ['files', 'embed', 'sharex', 'site'];
   function showTab() {
     if (!key) return;
     var tab = location.hash.slice(1);
     if (PANELS.indexOf(tab) === -1) tab = 'files';
     PANELS.forEach(function (p) { $(p).hidden = p !== tab; });
+    document.body.dataset.tab = tab;
     document.querySelectorAll('.dash-tabs a').forEach(function (a) {
       if (a.dataset.tab === tab) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');

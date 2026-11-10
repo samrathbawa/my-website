@@ -2,8 +2,14 @@
 // file host on top: ShareX uploads, Discord embeds, and the API behind /dashboard.
 // Files live in R2 under f/<id>; embed + URL settings live in one JSON object.
 // A daily cron deletes files older than RETENTION_DAYS unless an empty keep/<id> marker exists.
+// The homepage is blocks in config/site.json, edited from the dashboard's site tab: `/` renders
+// them (mode "home") or serves the static "still building" page in public/index.html (mode "building").
+
+import { normalizeSite, renderHome } from '../public/js/site.js';
 
 const SETTINGS_KEY = 'config/settings.json';
+const SITE_KEY = 'config/site.json';
+const SITE_CACHE_MS = 60 * 1000; // per-isolate copy of site.json, so page views rarely touch R2
 const RETENTION_DAYS = 180;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MAX_UPLOAD = 95 * 1024 * 1024; // Workers cap request bodies at 100 MB
@@ -45,6 +51,9 @@ export default {
     const url = new URL(request.url);
     try {
       if (url.pathname.startsWith('/api/')) return await api(request, env, url);
+      if (url.pathname === '/' && (request.method === 'GET' || request.method === 'HEAD')) {
+        return await serveHome(request, env, url);
+      }
       if (request.method === 'GET' || request.method === 'HEAD') {
         const res = await serveUpload(request, env, url);
         if (res) return res;
@@ -70,6 +79,38 @@ async function purgeExpired(env) {
     .map((o) => o.key);
   for (let i = 0; i < doomed.length; i += 1000) await env.UPLOADS.delete(doomed.slice(i, i + 1000));
   return doomed.length;
+}
+
+/* ---------- homepage ---------- */
+
+async function serveHome(request, env, url) {
+  let site;
+  try {
+    site = await getSite(env);
+  } catch (err) {
+    console.error('site.json unreadable, serving the holding page', err);
+    return env.ASSETS.fetch(request);
+  }
+  if (site.mode !== 'home') return env.ASSETS.fetch(request);
+  return new Response(request.method === 'HEAD' ? null : renderHome(site, { origin: url.origin }), {
+    headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-cache' },
+  });
+}
+
+let siteCache = null; // { site, at }
+
+async function getSite(env, fresh = false) {
+  if (!fresh && siteCache && Date.now() - siteCache.at < SITE_CACHE_MS) return siteCache.site;
+  const obj = await env.UPLOADS.get(SITE_KEY);
+  const site = normalizeSite(obj ? await obj.json() : {});
+  siteCache = { site, at: Date.now() };
+  return site;
+}
+
+async function putSite(env, site) {
+  await env.UPLOADS.put(SITE_KEY, JSON.stringify(site), { httpMetadata: { contentType: 'application/json' } });
+  siteCache = { site, at: Date.now() };
+  return site;
 }
 
 /* ---------- public file routes ---------- */
@@ -158,6 +199,18 @@ async function api(request, env, url) {
       else await env.UPLOADS.delete(keepKey(id));
       return json({ keep: method === 'PUT', expires: method === 'PUT' ? null : expiryOf(obj.uploaded) });
     }
+  }
+  // Homepage content. PUT /site saves page + blocks and keeps the mode; PUT /site/mode flips only the mode.
+  if (route === 'site' && method === 'GET') return json(await getSite(env, true));
+  if (route === 'site' && method === 'PUT') {
+    const input = await request.json().catch(() => ({}));
+    const { mode } = await getSite(env, true);
+    return json(await putSite(env, normalizeSite({ ...input, mode })));
+  }
+  if (route === 'site/mode' && method === 'PUT') {
+    const { mode } = await request.json().catch(() => ({}));
+    if (mode !== 'home' && mode !== 'building') return json({ error: 'mode must be "home" or "building"' }, 400);
+    return json(await putSite(env, { ...(await getSite(env, true)), mode }));
   }
   if (route === 'settings' && method === 'GET') return json(await getSettings(env));
   if (route === 'settings' && method === 'PUT') {
