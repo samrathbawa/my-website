@@ -1,7 +1,6 @@
 # Waiting on Sam
 
-- Homepage editor is built but not deployed. Commit and push to `main` (Cloudflare deploys it).
-- After the deploy: open sambawa.dev/dashboard → **4:site**. The draft starts as the full system24 portfolio. Edit it and save. Visitors still see the still building page.
+- Homepage editor is live. Open sambawa.dev/dashboard → **4:site**. The draft starts as the full system24 portfolio. Edit it and save. Visitors still see the still building page.
 - When you're happy with it, click **Homepage** at the top of the site tab to put it live. Click **Still building page** to take it back down.
 - Optional: in Cloudflare → Notifications, add a billing or usage alert. On the Billing page, check that Workers says Free.
 - ShareX: download the `.sxcu` from the dashboard's sharex tab and double-click it to import.

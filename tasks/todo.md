@@ -3,7 +3,7 @@
 Personal site + private file host on Cloudflare: Worker `my-website` (custom domain sambawa.dev) serving `public/`, R2 bucket `sambawa-uploads`, secret `UPLOAD_KEY`. Pushes to `main` auto-deploy.
 
 ## Resume here
-- Next step: M4 — Sam commits + pushes, then tries the site tab on sambawa.dev/dashboard (edit, save, flip the toggle).
+- Next step: M4 — Sam tries the site tab on sambawa.dev/dashboard (edit, save, flip the toggle).
 
 ## Roadmap
 
@@ -55,7 +55,8 @@ Homepage content is blocks in R2 (`config/site.json`); the Worker renders `/` fr
 - [x] Worker: `/` renders blocks (mode "home") or serves public/index.html (mode "building"); GET/PUT /api/site, PUT /api/site/mode; 60 s in-memory cache of site.json
 - [x] Dashboard "site" tab: mode toggle, page settings, add/reorder/drag/duplicate/hide/delete blocks, edit text + links, live preview (desktop/phone), click a box in the preview to edit it
 - [x] Verified with wrangler dev + headless Edge: API auth (401), bad mode (400), save keeps mode, both modes on `/`, editor edit/add/move/hide/save, link warning, phone width (no overflow), no console errors
-- [ ] Commit + push (Sam), then test on sambawa.dev/dashboard → site
+- [x] 2026-11-10: Pushed (ce17739), deployed; verified live: editor files 200, `/` still the building page, /api/site 401 without key
+- [ ] Sam tests the site tab on sambawa.dev/dashboard
 
 ### M5 Homepage live
 - [ ] Sam edits the homepage content in the site tab until happy
