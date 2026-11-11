@@ -23,6 +23,7 @@
   --accent-3: oklch(65% 0.11 215);   /* primary button */
   --accent-4: oklch(60% 0.11 215);   /* primary button hover */
   --on-accent: var(--bg-4);
+  --primary-edge: var(--accent-3);
   --online: oklch(70% 0.12 170);
   --cal-0: var(--bg-2);
   --cal-1: oklch(38% 0.05 170);
@@ -55,11 +56,12 @@
   --bg-4: oklch(94% 0 0);
   --hover: oklch(50% 0 0 / 0.1);
   --active: oklch(50% 0 0 / 0.2);
-  --accent-1: oklch(48% 0.11 215);
+  --accent-1: oklch(46% 0.11 215);
   --accent-2: oklch(55% 0.11 215);
   --accent-3: oklch(70% 0.11 215);
   --accent-4: oklch(65% 0.11 215);
   --on-accent: oklch(20% 0 0);
+  --primary-edge: var(--accent-1);
   --online: oklch(60% 0.12 170);
   --cal-0: var(--bg-2);
   --cal-1: oklch(85% 0.06 170);
@@ -81,11 +83,12 @@
     --bg-4: oklch(94% 0 0);
     --hover: oklch(50% 0 0 / 0.1);
     --active: oklch(50% 0 0 / 0.2);
-    --accent-1: oklch(48% 0.11 215);
+    --accent-1: oklch(46% 0.11 215);
     --accent-2: oklch(55% 0.11 215);
     --accent-3: oklch(70% 0.11 215);
     --accent-4: oklch(65% 0.11 215);
     --on-accent: oklch(20% 0 0);
+    --primary-edge: var(--accent-1);
     --online: oklch(60% 0.12 170);
     --cal-0: var(--bg-2);
     --cal-1: oklch(85% 0.06 170);
@@ -200,20 +203,7 @@ h1, h2, h3, p { margin: 0; font-size: inherit; }
 .tabs a:hover { background: var(--hover); color: var(--text-1); text-decoration: none; }
 .tabs a[aria-current] { background: var(--active); color: var(--text-1); }
 .tabs a[aria-current] .n { color: var(--accent-1); }
-.theme-btn {
-  min-height: var(--tap);
-  min-width: var(--tap);
-  padding: 0 12px;
-  background: transparent;
-  border: 1px solid var(--button-border);
-  color: var(--text-3);
-  font: inherit;
-  font-size: 0.9375rem;
-  letter-spacing: inherit;
-  cursor: pointer;
-  transition: background var(--list-item-transition), color var(--list-item-transition);
-}
-.theme-btn:hover { background: var(--hover); color: var(--text-1); }
+.theme-btn { min-width: var(--tap); }
 
 /* about */
 .banner {
@@ -241,24 +231,36 @@ h1, h2, h3, p { margin: 0; font-size: inherit; }
 .intro-heading { margin-bottom: 0.75rem; color: var(--text-1); font-size: clamp(1.5rem, 4vw, 2.25rem); font-weight: 500; line-height: 1.2; }
 .rich p + p { margin-top: 0.75em; }
 .rich a { text-decoration: underline; text-underline-offset: 3px; }
-.buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.25rem; }
-.btn {
+.buttons { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 1.25rem; padding: 4px; }
+/* Wide-gap double frame: a 1px border, a 3px gap, then a second 1px line. The second line is
+   a box-shadow (not outline) so the keyboard focus ring can sit outside it without replacing it.
+   --frame drives both lines. Primary is a solid fill inside the frame; in light mode its edge
+   uses --primary-edge because the fill alone is under 3:1 against the page.
+   Pressing swaps to reverse video, the terminal way to show a key being hit. */
+.btn, .theme-btn {
+  --frame: var(--text-4);
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: var(--tap);
-  padding: 0 16px;
-  background: var(--bg-2);
-  border: 1px solid var(--button-border);
+  padding: 0 2ch;
+  background: transparent;
+  border: 1px solid var(--frame);
+  box-shadow: 0 0 0 3px var(--bg-4), 0 0 0 4px var(--frame);
   color: var(--text-2);
+  font: inherit;
   font-size: 0.9375rem;
   font-weight: 400;
-  transition: background var(--list-item-transition);
+  letter-spacing: inherit;
+  cursor: pointer;
+  transition: border-color var(--border-hover-transition), box-shadow var(--border-hover-transition), color var(--border-hover-transition), background var(--list-item-transition);
 }
-.btn:hover { background: var(--bg-1); text-decoration: none; }
-.btn:active { transform: translateY(1px); }
-.btn.primary { background: var(--accent-3); border-color: var(--accent-3); color: var(--on-accent); font-weight: 500; }
-.btn.primary:hover { background: var(--accent-4); border-color: var(--accent-4); }
+.btn:focus-visible, .theme-btn:focus-visible { outline-offset: 6px; }
+.btn:hover, .theme-btn:hover { --frame: var(--accent-2); color: var(--accent-1); background: var(--hover); text-decoration: none; }
+.btn:active, .theme-btn:active { --frame: var(--text-2); background: var(--text-2); color: var(--bg-4); }
+.btn.primary { --frame: var(--primary-edge); background: var(--accent-3); color: var(--on-accent); font-weight: 500; }
+.btn.primary:hover { --frame: var(--primary-edge); background: var(--accent-4); color: var(--on-accent); text-decoration: underline; text-underline-offset: 3px; }
+.btn.primary:active { --frame: var(--text-2); background: var(--text-2); color: var(--bg-4); text-decoration: none; }
 
 /* now */
 .now-list { list-style: none; margin: 0; padding: 0; }

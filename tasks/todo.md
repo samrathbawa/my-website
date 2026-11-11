@@ -62,6 +62,7 @@ Homepage content is blocks in R2 (`config/site.json`); the Worker renders `/` fr
 ### M5 Homepage live
 - [ ] Sam edits the homepage content in the site tab until happy
 - [x] 2026-11-10: Sam flipped the toggle to Homepage (live)
+- [x] 2026-11-11: Homepage buttons + theme toggle now use the chosen wide-gap double frame (home.css had kept the old flat style)
 - [ ] Sam confirms final repo list (repo cards: set "GitHub repo name" on a card)
 
 ### M6 Cleanup
